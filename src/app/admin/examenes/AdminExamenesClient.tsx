@@ -166,7 +166,7 @@ export default function AdminExamenesClient({ examenes: initial }: { examenes: E
                 Examen activo
               </label>
               <div className="flex gap-2">
-                <button onClick={() => setShowForm(false)} className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition">Cancelar</button>
+                <button onClick={() => setShowForm(false)} className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition">Cancelar</button>
                 <button onClick={handleSave} className="flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition"><Check size={16} /> Guardar</button>
               </div>
             </div>
