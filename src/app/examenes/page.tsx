@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Exámenes – Aclin Laboratorio Clí
 
 export default async function ExamenesPage() {
   const examenes = await prisma.examen.findMany({ where: { activo: true }, orderBy: { nombre: "asc" } });
-  const categorias = [...new Set(examenes.map((e) => e.categoria).filter(Boolean))].sort() as string[];
+  const categorias = [...new Set(examenes.map((e: { categoria?: string | null }) => e.categoria).filter(Boolean))].sort() as string[];
   return (
     <div className="min-h-screen bg-white">
       {/* Hero con imagen */}
