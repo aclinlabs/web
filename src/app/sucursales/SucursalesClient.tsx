@@ -102,9 +102,9 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
       </div>
 
       {/* Layout: sidebar + imagen grande + mapa pequeño */}
-      <div className="flex gap-0 border border-gray-200 rounded overflow-hidden" style={{ minHeight: "560px" }}>
+      <div className="flex gap-0 border border-gray-200 rounded overflow-hidden">
         {/* Sidebar */}
-        <div className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-white">
+        <div className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-white" style={{ minHeight: "320px" }}>
           <div className="bg-[#087849] text-white px-4 py-3 text-sm font-semibold">
             Número de sucursales: {filtered.length}
           </div>
