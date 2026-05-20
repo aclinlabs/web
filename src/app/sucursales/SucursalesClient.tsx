@@ -102,9 +102,9 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
       </div>
 
       {/* Layout: sidebar + imagen grande + mapa pequeño */}
-      <div className="flex gap-0 border border-gray-200 rounded overflow-hidden" style={{ minHeight: "520px" }}>
+      <div className="flex gap-0 border border-gray-200 rounded overflow-hidden" style={{ minHeight: "560px" }}>
         {/* Sidebar */}
-        <div className="w-64 shrink-0 border-r border-gray-200 overflow-y-auto bg-white">
+        <div className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-white">
           <div className="bg-[#087849] text-white px-4 py-3 text-sm font-semibold">
             Número de sucursales: {filtered.length}
           </div>
@@ -126,32 +126,30 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
                 {isOpen && citySucursales.map((s) => (
                   <div
                     key={s.id}
-                    className="px-4 py-3 bg-gray-50 border-b border-gray-100 cursor-pointer"
+                    className="px-4 py-4 bg-gray-50 border-b border-gray-100 cursor-pointer hover:bg-green-50 transition"
                     onClick={() => selectSucursal(s)}
                   >
-                    <div className="flex-1">
-                      <p className="font-semibold text-sm text-gray-900">{s.nombre}</p>
-                      <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
-                        <MapPin size={11} className="text-[#087849] shrink-0" /> {s.direccion}
+                    <p className="font-bold text-sm text-gray-900 mb-2">{s.nombre}</p>
+                    <p className="text-xs text-gray-500 flex items-start gap-1 mb-1">
+                      <MapPin size={12} className="text-[#087849] shrink-0 mt-0.5" /> {s.direccion}
+                    </p>
+                    {s.email && (
+                      <p className="text-xs text-gray-500 flex items-start gap-1 mb-2">
+                        <Mail size={12} className="text-[#087849] shrink-0 mt-0.5" /> {s.email}
                       </p>
-                      {s.email && (
-                        <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                          <Mail size={11} className="text-[#087849] shrink-0" /> {s.email}
-                        </p>
-                      )}
-                      {s.horarioClinica && (
-                        <div className="mt-2 text-xs">
-                          <p className="font-semibold text-[#087849] mb-0.5">Horario Clínico</p>
-                          <p className="text-gray-600 whitespace-pre-line leading-relaxed">{s.horarioClinica}</p>
-                        </div>
-                      )}
-                      {s.horarioAdmin && (
-                        <div className="mt-2 text-xs">
-                          <p className="font-semibold text-[#087849] mb-0.5">Horario Administrativo</p>
-                          <p className="text-gray-600 whitespace-pre-line leading-relaxed">{s.horarioAdmin}</p>
-                        </div>
-                      )}
-                    </div>
+                    )}
+                    {s.horarioClinica && (
+                      <div className="mt-2">
+                        <p className="text-xs font-bold text-[#087849] uppercase tracking-wide mb-1">Horario Clínico</p>
+                        <p className="text-xs text-gray-700 leading-relaxed">{s.horarioClinica}</p>
+                      </div>
+                    )}
+                    {s.horarioAdmin && (
+                      <div className="mt-2">
+                        <p className="text-xs font-bold text-[#087849] uppercase tracking-wide mb-1">Horario Administrativo</p>
+                        <p className="text-xs text-gray-700 leading-relaxed">{s.horarioAdmin}</p>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
