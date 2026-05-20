@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Sucursal {
+  id           String   @id @default(cuid())
+  nombre       String
+  direccion    String
+  ciudad       String
+  telefono     String?
+  email        String?
+  lat          Float
+  lng          Float
+  imagen       String?
+  horarioClinica   String?
+  horarioAdmin     String?
+  activa       Boolean  @default(true)
+  orden        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Examen {
+  id          String   @id @default(cuid())
+  nombre       String
+  codigo       String?  @unique
+  categoria    String?
+  subcategoria String?
+  descripcion  String?
+  preparacion  String?
+  tiempo       String?
+  muestra      String?
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Popup {
+  id        String   @id @default(cuid())
+  titulo    String
+  contenido String
+  imagen    String?
+  link      String?
+  activo    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Configuracion {
+  id        String   @id @default(cuid())
+  clave     String   @unique
+  valor     String
+  updatedAt DateTime @updatedAt
+}
+
+model ResultadoSucursal {
+  id        String   @id @default(cuid())
+  nombre    String
+  activo    Boolean  @default(true)
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

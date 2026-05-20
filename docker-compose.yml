@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: web-aclin-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: webaclin
+      POSTGRES_USER: aclin
+      POSTGRES_PASSWORD: aclin1234
+    ports:
+      - "5437:5432"
+    volumes:
+      - web_aclin_data:/var/lib/postgresql/data
+
+volumes:
+  web_aclin_data:
+    name: web_aclin_data

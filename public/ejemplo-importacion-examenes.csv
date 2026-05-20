@@ -1,0 +1,6 @@
+Categoría,Subcategoría,Código,Nombre del Examen,Tipo de Muestra,Preparación del Paciente,Plazo de Entrega,Descripción
+Química Clínica Sangre,,302001,Acetona (Cetonemia o Cuerpos cetónicos),Sangre,Ayuno 8 hrs.,Mismo día,
+Química Clínica Sangre,,302004,Ácido Láctico (lactato),Sangre,Ayuno 8 hrs. Toma de muestra solo en algunas sucursales,Mismo día,
+Hematología,,301001,Hemograma completo,Sangre,Sin preparación especial,Mismo día,Incluye recuento de glóbulos rojos y blancos
+Orina,,303001,Orina completa (Uroanálisis),Orina,Primera orina de la mañana,Mismo día,
+Serología,,305001,VIH (ELISA),Sangre,Sin preparación especial,1-2 días,

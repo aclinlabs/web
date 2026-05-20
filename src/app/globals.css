@@ -3,11 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --aclin-green: #1a7a3c;
+  --aclin-green-dark: #145c2d;
+  --aclin-green-light: #e8f5ed;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-aclin-green: var(--aclin-green);
+  --color-aclin-green-dark: var(--aclin-green-dark);
+  --color-aclin-green-light: var(--aclin-green-light);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
