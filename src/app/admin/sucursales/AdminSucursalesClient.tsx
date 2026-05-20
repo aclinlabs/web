@@ -16,11 +16,12 @@ interface Sucursal {
   lng: number;
   horarioClinica?: string | null;
   horarioAdmin?: string | null;
+  imagen?: string | null;
   activa: boolean;
   orden: number;
 }
 
-const empty: Partial<Sucursal> = { nombre: "", direccion: "", ciudad: "", telefono: "", email: "", lat: -33.02, lng: -71.55, horarioClinica: "", horarioAdmin: "", activa: true, orden: 0 };
+const empty: Partial<Sucursal> = { nombre: "", direccion: "", ciudad: "", telefono: "", email: "", lat: -33.02, lng: -71.55, horarioClinica: "", horarioAdmin: "", imagen: "", activa: true, orden: 0 };
 
 export default function AdminSucursalesClient({ sucursales: initial, apiKey }: { sucursales: Sucursal[]; apiKey: string }) {
   const [list, setList] = useState<Sucursal[]>(initial);
@@ -151,6 +152,11 @@ export default function AdminSucursalesClient({ sucursales: initial, apiKey }: {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">URL Imagen</label>
+                <input type="text" placeholder="https://..." value={form.imagen || ""} onChange={(e) => setForm({ ...form, imagen: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1a7a3c]" />
+                {form.imagen && <img src={form.imagen} alt="preview" className="mt-2 h-24 w-full object-cover rounded-lg border border-gray-200" />}
+              </div>
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Horario Clínico</label>
                 <textarea rows={4} value={form.horarioClinica || ""} onChange={(e) => setForm({ ...form, horarioClinica: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1a7a3c] resize-none" />
@@ -180,6 +186,7 @@ export default function AdminSucursalesClient({ sucursales: initial, apiKey }: {
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">Nombre</th>
+                <th className="w-16 px-4 py-3 hidden md:table-cell"></th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold hidden md:table-cell">Ciudad</th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold hidden lg:table-cell">Email</th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">Estado</th>
@@ -190,6 +197,9 @@ export default function AdminSucursalesClient({ sucursales: initial, apiKey }: {
               {list.map((s) => (
                 <tr key={s.id} className="hover:bg-gray-50 transition">
                   <td className="px-4 py-3 font-medium text-gray-900">{s.nombre}</td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    {s.imagen ? <img src={s.imagen} alt={s.nombre} className="h-10 w-16 object-cover rounded-lg border border-gray-200" /> : <div className="h-10 w-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 text-xs">Sin img</div>}
+                  </td>
                   <td className="px-4 py-3 text-gray-500 hidden md:table-cell">{s.ciudad}</td>
                   <td className="px-4 py-3 text-gray-500 hidden lg:table-cell">{s.email || "–"}</td>
                   <td className="px-4 py-3">
