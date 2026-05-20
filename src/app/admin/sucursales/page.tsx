@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import AdminSucursalesClient from "./AdminSucursalesClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminSucursalesPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");

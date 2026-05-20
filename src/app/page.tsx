@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import { MapPin, FlaskConical, Baby, ClipboardList, Home, CheckCircle, FileText, IdCard, MessageCircleQuestion } from "lucide-react";
 import SucursalesMapPreview from "@/components/SucursalesMapPreview";

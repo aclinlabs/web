@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import ExamenesClient from "./ExamenesClient";
+
+export const dynamic = 'force-dynamic';
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Exámenes – Aclin Laboratorio Clínico" };
