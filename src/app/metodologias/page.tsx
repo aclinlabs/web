@@ -193,15 +193,6 @@ const metodologias = [
 export default function MetodologiasPage() {
   return (
     <div>
-      {/* Hero */}
-      <div className="w-full h-48 md:h-56 overflow-hidden">
-        <img
-          src="/metodologias-hero.jpg"
-          alt="Laboratorio Aclin"
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
-
       {/* Título y descripción */}
       <div className="max-w-5xl mx-auto px-4 pt-10 pb-6">
         <h1 className="text-4xl md:text-5xl font-black text-[#087849] leading-tight mb-4">
