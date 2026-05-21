@@ -194,64 +194,73 @@ export default function MetodologiasPage() {
   return (
     <div>
       {/* Hero */}
-      <div className="relative h-64 md:h-80 overflow-hidden">
+      <div className="w-full h-48 md:h-56 overflow-hidden">
         <img
           src="/metodologias-hero.jpg"
           alt="Laboratorio Aclin"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 flex items-end">
-          <div className="max-w-5xl w-full mx-auto px-4 pb-8">
-            <h1 className="text-3xl md:text-5xl font-black text-white drop-shadow-xl" style={{textShadow:"2px 2px 8px rgba(0,0,0,0.7)"}}>Nuestras Metodologías</h1>
-          </div>
-        </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-10">
-      <section>
-        <div className="space-y-2">
-          {metodologias.map((m, i) => (
-            <details
-              key={i}
-              className="group border border-gray-200 rounded-lg overflow-hidden"
-            >
-              <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer bg-white hover:bg-green-50 transition list-none">
-                <span className="font-semibold text-gray-800 text-sm md:text-base">{m.titulo}</span>
-                <span className="shrink-0 w-6 h-6 rounded-full bg-[#087849] text-white flex items-center justify-center text-lg font-bold group-open:rotate-45 transition-transform duration-200">
-                  +
-                </span>
-              </summary>
+      {/* Título y descripción */}
+      <div className="max-w-5xl mx-auto px-4 pt-10 pb-6">
+        <h1 className="text-4xl md:text-5xl font-black text-[#087849] leading-tight mb-4">
+          Metodologías<br />y equipamiento
+        </h1>
+        <p className="text-gray-600 text-base md:text-lg max-w-2xl">
+          Aclin cuenta con equipamiento de última generación y metodologías de vanguardia para garantizar la precisión y confiabilidad en cada resultado.
+        </p>
+      </div>
 
-              <div className="px-5 py-5 bg-gray-50 border-t border-gray-200">
-                <div className={m.imagenes.length > 1 ? "flex flex-col md:flex-row gap-6" : "flex flex-col md:flex-row gap-6"}>
-                  {/* Texto */}
-                  {m.texto.length > 0 && (
-                    <div className="flex-1 text-sm text-gray-700 space-y-2 leading-relaxed">
-                      {m.texto.map((linea, j) => (
-                        <p key={j}>{linea}</p>
-                      ))}
-                    </div>
-                  )}
+      <div className="max-w-5xl mx-auto px-4 pb-16">
+        <section>
+          <div>
+            {metodologias.map((m, i) => (
+              <details
+                key={i}
+                className="group"
+              >
+                <summary
+                  className={`flex items-center gap-3 px-5 py-4 cursor-pointer transition list-none ${
+                    i % 2 === 0 ? "bg-white" : "bg-[#f0faf5]"
+                  } hover:bg-[#e0f5ea]`}
+                >
+                  <span className="shrink-0 text-[#087849] text-base font-bold transition-transform duration-200 group-open:rotate-180">
+                    ▼
+                  </span>
+                  <span className="font-semibold text-gray-800 text-sm md:text-base">{m.titulo}</span>
+                </summary>
 
-                  {/* Imágenes */}
-                  <div className={`shrink-0 ${m.imagenes.length === 1 ? "w-full md:w-80" : "w-full"}`}>
-                    <div className={`grid gap-3 ${m.imagenes.length === 1 ? "grid-cols-1" : m.imagenes.length <= 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-3"}`}>
-                      {m.imagenes.map((src, j) => (
-                        <img
-                          key={j}
-                          src={src}
-                          alt={`${m.titulo} — equipo ${j + 1}`}
-                          className="w-full h-40 object-contain bg-white rounded border border-gray-100 p-2"
-                        />
-                      ))}
+                <div className="px-5 py-5 bg-gray-50 border-t border-gray-200">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    {/* Texto */}
+                    {m.texto.length > 0 && (
+                      <div className="flex-1 text-sm text-gray-700 space-y-2 leading-relaxed">
+                        {m.texto.map((linea, j) => (
+                          <p key={j}>{linea}</p>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Imágenes */}
+                    <div className={`shrink-0 ${m.imagenes.length === 1 ? "w-full md:w-80" : "w-full"}`}>
+                      <div className={`grid gap-3 ${m.imagenes.length === 1 ? "grid-cols-1" : m.imagenes.length <= 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-3"}`}>
+                        {m.imagenes.map((src, j) => (
+                          <img
+                            key={j}
+                            src={src}
+                            alt={`${m.titulo} — equipo ${j + 1}`}
+                            className="w-full h-40 object-contain bg-white rounded border border-gray-100 p-2"
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
+              </details>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
