@@ -1,5 +1,3 @@
-import PublicLayout from "@/components/PublicLayout";
-
 const metodologias = [
   {
     titulo: "Bioquímica clínica e inmunoensayos (análisis hormonales, serológicos y antigénicos)",
@@ -194,26 +192,9 @@ const metodologias = [
 
 export default function MetodologiasPage() {
   return (
-    <PublicLayout>
-      {/* Hero */}
-      <section
-        className="relative text-white flex items-end"
-        style={{
-          backgroundImage: "url('https://aclin.cl/wp-content/uploads/2024/09/banner-page-2.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 30%",
-          minHeight: "220px",
-        }}
-      >
-        <div className="absolute inset-0 bg-[#087849]/70" />
-        <div className="relative max-w-7xl mx-auto px-6 pb-10 pt-16">
-          <h1 className="text-3xl md:text-5xl font-black text-white">Nuestras Metodologías</h1>
-          <p className="text-green-100 mt-2 text-sm">Inicio › Metodologías y Equipamientos</p>
-        </div>
-      </section>
-
-      {/* Contenido */}
-      <section className="max-w-5xl mx-auto px-4 py-12">
+    <div className="max-w-5xl mx-auto px-4 py-12">
+      <h1 className="text-3xl md:text-5xl font-black text-[#087849] mb-8">Nuestras Metodologías</h1>
+      <section>
         <div className="space-y-2">
           {metodologias.map((m, i) => (
             <details
@@ -257,6 +238,6 @@ export default function MetodologiasPage() {
           ))}
         </div>
       </section>
-    </PublicLayout>
+    </div>
   );
 }
