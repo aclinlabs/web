@@ -173,7 +173,7 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
           )}
 
           {/* Mapa pequeño — esquina inferior derecha */}
-          <div className="absolute bottom-3 right-3 w-52 h-36 rounded-lg overflow-hidden shadow-lg border-2 border-white">
+          <div className="absolute bottom-3 right-3 rounded-lg overflow-hidden shadow-lg border-2 border-white" style={{ width: 500, height: 250 }}>
             {isLoaded ? (
               <GoogleMap
                 mapContainerStyle={{ width: "100%", height: "100%" }}
