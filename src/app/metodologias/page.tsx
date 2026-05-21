@@ -70,7 +70,7 @@ const metodologias = [
   {
     titulo: "Nefelometría",
     texto: [
-      "Los sistemas Atellica NEPH 630 de Siemens son instrumentos de alta sofisticación que, a través de la metodología considerada el método de referencia o "gold standard" para el análisis cuantitativo de proteínas plasmáticas de interés clínico, son capaces de medir más de 70 analitos distintos a velocidades de hasta 65 test/Hora. Nuestro laboratorio dispone de 2 de estos instrumentos, suficientes para cubrir los requerimientos de este tipo de exámenes.",
+      "Los sistemas Atellica NEPH 630 de Siemens son instrumentos de alta sofisticación que, a través de la metodología considerada el método de referencia o 'gold standard' para el análisis cuantitativo de proteínas plasmáticas de interés clínico, son capaces de medir más de 70 analitos distintos a velocidades de hasta 65 test/Hora. Nuestro laboratorio dispone de 2 de estos instrumentos, suficientes para cubrir los requerimientos de este tipo de exámenes.",
       "Análisis disponibles:",
       "• Proteína C Reactiva",
       "• Proteína C Reactiva ultra sensible",
