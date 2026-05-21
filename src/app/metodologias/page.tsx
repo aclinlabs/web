@@ -192,8 +192,22 @@ const metodologias = [
 
 export default function MetodologiasPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
-      <h1 className="text-3xl md:text-5xl font-black text-[#087849] mb-8">Nuestras Metodologías</h1>
+    <div>
+      {/* Hero */}
+      <div className="relative h-64 md:h-80 overflow-hidden">
+        <img
+          src="/metodologias-hero.jpg"
+          alt="Laboratorio Aclin"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#087849]/50 flex items-end">
+          <div className="max-w-5xl w-full mx-auto px-4 pb-8">
+            <h1 className="text-3xl md:text-5xl font-black text-white drop-shadow-lg">Nuestras Metodologías</h1>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 py-10">
       <section>
         <div className="space-y-2">
           {metodologias.map((m, i) => (
@@ -238,6 +252,7 @@ export default function MetodologiasPage() {
           ))}
         </div>
       </section>
+      </div>
     </div>
   );
 }
