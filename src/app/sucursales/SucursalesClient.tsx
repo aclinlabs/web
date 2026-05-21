@@ -158,7 +158,7 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
         </div>
 
         {/* Imagen grande de la sucursal + mapa pequeño en esquina */}
-        <div className="flex-1 relative overflow-hidden bg-white flex items-center justify-center">
+        <div className="flex-1 relative overflow-hidden bg-white flex items-center justify-start">
           {/* Imagen grande */}
           {selected?.imagen ? (
             <img
