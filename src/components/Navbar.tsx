@@ -21,6 +21,7 @@ export default function Navbar() {
           <Link href="/cotizaciones" className="hover:text-green-200 transition">Cotizaciones</Link>
           <Link href="/sucursales" className="hover:text-green-200 transition">Sucursales</Link>
           <Link href="/nosotros" className="hover:text-green-200 transition">Nosotros</Link>
+          <Link href="/metodologias" className="hover:text-green-200 transition">Metodologías</Link>
           <Link href="/contacto" className="hover:text-green-200 transition">Contacto</Link>
           <a
             href="https://pacientes.aclin.cl/resultados/"
@@ -46,6 +47,7 @@ export default function Navbar() {
           <Link href="/cotizaciones" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Cotizaciones</Link>
           <Link href="/sucursales" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Sucursales</Link>
           <Link href="/nosotros" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Nosotros</Link>
+          <Link href="/metodologias" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Metodologías</Link>
           <Link href="/contacto" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Contacto</Link>
           <a
             href="https://pacientes.aclin.cl/resultados/"
