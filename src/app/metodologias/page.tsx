@@ -200,9 +200,9 @@ export default function MetodologiasPage() {
           alt="Laboratorio Aclin"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[#087849]/50 flex items-end">
+        <div className="absolute inset-0 flex items-end">
           <div className="max-w-5xl w-full mx-auto px-4 pb-8">
-            <h1 className="text-3xl md:text-5xl font-black text-white drop-shadow-lg">Nuestras Metodologías</h1>
+            <h1 className="text-3xl md:text-5xl font-black text-white drop-shadow-xl" style={{textShadow:"2px 2px 8px rgba(0,0,0,0.7)"}}>Nuestras Metodologías</h1>
           </div>
         </div>
       </div>
