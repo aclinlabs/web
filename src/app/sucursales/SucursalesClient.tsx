@@ -139,15 +139,15 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
                       </p>
                     )}
                     {s.horarioClinica && (
-                      <div className="mt-2">
-                        <p className="text-xs font-bold text-[#087849] uppercase tracking-wide mb-1">Horario Clínico</p>
-                        <p className="text-xs text-gray-700 leading-relaxed">{s.horarioClinica}</p>
-                      </div>
-                    )}
-                    {s.horarioAdmin && (
-                      <div className="mt-2">
-                        <p className="text-xs font-bold text-[#087849] uppercase tracking-wide mb-1">Horario Administrativo</p>
-                        <p className="text-xs text-gray-700 leading-relaxed">{s.horarioAdmin}</p>
+                        <div className="mt-3 border-t border-gray-200 pt-2">
+                          <p className="text-xs font-bold text-[#087849] mb-0.5">🧪 Horario de atención clínica</p>
+                          <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioClinica}</p>
+                        </div>
+                      )}
+                      {s.horarioAdmin && (
+                        <div className="mt-2">
+                          <p className="text-xs font-bold text-[#087849] mb-0.5">📋 Horario de atención administrativa</p>
+                          <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioAdmin}</p>
                       </div>
                     )}
                   </div>
