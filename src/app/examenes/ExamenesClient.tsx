@@ -17,8 +17,6 @@ interface Examen {
 export default function ExamenesClient({ examenes, categorias }: { examenes: Examen[]; categorias: string[] }) {
   const [query, setQuery] = useState("");
   const [catFilter, setCatFilter] = useState("Todos");
-  const [page, setPage] = useState(1);
-  const PER_PAGE = 20;
 
   const filtered = useMemo(() => {
     return examenes.filter((e) => {
@@ -28,11 +26,8 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
     });
   }, [examenes, query, catFilter]);
 
-  const totalPages = Math.ceil(filtered.length / PER_PAGE);
-  const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-
-  function handleSearch(v: string) { setQuery(v); setPage(1); }
-  function handleCat(v: string) { setCatFilter(v); setPage(1); }
+  function handleSearch(v: string) { setQuery(v); }
+  function handleCat(v: string) { setCatFilter(v); }
 
   return (
     <>
@@ -77,47 +72,47 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
         </ul>
       </aside>
 
-      {/* Tabla */}
+      {/* Tabla con scroll */}
       <div className="flex-1 min-w-0">
-        <div className="rounded-xl overflow-hidden border border-gray-200 overflow-x-auto">
-          <table className="w-full text-sm min-w-[600px]">
-            <thead>
-              <tr className="bg-[#087849] text-white">
-                <th className="text-left px-4 py-3 font-semibold">Nombre</th>
-                <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Preparación del paciente</th>
-                <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Plazo de entrega</th>
-                <th className="text-left px-4 py-3 font-semibold">Código</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginated.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-4 py-10 text-center text-gray-400 text-sm">
-                    No se encontraron exámenes con ese criterio.
-                  </td>
+        <div className="rounded-xl overflow-hidden border border-gray-200">
+          <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
+            <table className="w-full text-sm min-w-[600px]">
+              <thead className="sticky top-0">
+                <tr className="bg-[#087849] text-white">
+                  <th className="text-left px-4 py-3 font-semibold">Nombre</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Preparación del paciente</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell whitespace-nowrap">Plazo de entrega</th>
+                  <th className="text-left px-4 py-3 font-semibold">Código</th>
                 </tr>
-              ) : (
-                paginated.map((e, i) => (
-                  <tr key={e.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f0f8f4]"}>
-                    <td className="px-4 py-3 text-gray-800 font-medium">{e.nombre}</td>
-                    <td className="px-4 py-3 text-[#087849] hidden md:table-cell">{e.preparacion || "–"}</td>
-                    <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{e.tiempo || "–"}</td>
-                    <td className="px-4 py-3 text-gray-600">{e.codigo || "–"}</td>
+              </thead>
+              <tbody>
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-4 py-10 text-center text-gray-400 text-sm">
+                      No se encontraron exámenes con ese criterio.
+                    </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Paginación */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
-            <button disabled={page === 1} onClick={() => setPage(page - 1)} className="px-3 py-1.5 rounded border border-gray-300 text-sm disabled:opacity-40 hover:bg-gray-50 transition">← Anterior</button>
-            <span className="text-sm text-gray-500">Página {page} de {totalPages}</span>
-            <button disabled={page === totalPages} onClick={() => setPage(page + 1)} className="px-3 py-1.5 rounded border border-gray-300 text-sm disabled:opacity-40 hover:bg-gray-50 transition">Siguiente →</button>
+                ) : (
+                  filtered.map((e, i) => (
+                    <tr key={e.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f0f8f4]"}>
+                      <td className="px-4 py-3 text-gray-900 font-medium">{e.nombre}</td>
+                      <td className="px-4 py-3 text-gray-900 hidden md:table-cell">
+                        {e.preparacion
+                          ? (e.preparacion.startsWith("http") || e.preparacion.toLowerCase().endsWith(".pdf")
+                              ? <a href={e.preparacion} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline">Ver PDF</a>
+                              : e.preparacion)
+                          : "–"}
+                      </td>
+                      <td className="px-4 py-3 text-gray-900 hidden md:table-cell whitespace-nowrap">{e.tiempo || "–"}</td>
+                      <td className="px-4 py-3 text-gray-600">{e.codigo || "–"}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
-        )}
+        </div>
+        <p className="text-xs text-gray-500 mt-2 text-right">{filtered.length} examen{filtered.length !== 1 ? "es" : ""} encontrado{filtered.length !== 1 ? "s" : ""}</p>
       </div>
     </div>
 
@@ -125,7 +120,7 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
     <div className="bg-[#e8f4ee] mt-10 py-10 px-6">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-black text-[#087849] mb-3">¡Recuerde!</h2>
-        <p className="text-gray-700 mb-4 max-w-3xl">
+        <p className="text-gray-900 mb-4 max-w-3xl">
           Planifique su día si se realizará alguno de los siguientes exámenes, necesitará permanecer al menos
           2 horas y media aproximadamente en las inmediaciones de la unidad de toma de muestras.
         </p>
@@ -134,19 +129,20 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
             "Exámenes post carga de glucosa: Curva de tolerancia oral a la glucosa (PTGO) con dos o más glicemias;",
             "Medición de glicemia a la hora o dos horas post carga de glucosa;",
             "Curva de insulina post carga de glucosa con dos o más mediciones;",
-            "Insulina post carga de glucosa;   Hormona del crecimiento (HGH) post carga de glucosa;",
+            "Insulina post carga de glucosa; Hormona del crecimiento (HGH) post carga de glucosa;",
             "Glucosa y/o insulina post prandial.",
           ].map((item, i) => (
-            <li key={i} className="flex gap-2 text-gray-700 text-sm">
+            <li key={i} className="flex gap-2 text-gray-900 text-sm">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#087849] shrink-0" />
               {item}
             </li>
           ))}
         </ul>
-        <p className="text-gray-700 text-sm max-w-3xl">
+        <p className="text-gray-900 text-sm max-w-3xl">
           Estos exámenes se realizan de lunes a viernes, o puedes{" "}
           <strong>agendar en algunas sucursales los días sábados.</strong><br />
-          Acércase a su sucursal más cercana para obtener más indicaciones o contáctanos a nuestro Call Center (32 33 23 600)
+          Acérquese a su sucursal más cercana o contáctenos al Call Center{" "}
+          <span className="whitespace-nowrap font-semibold">32 33 23 600</span>
         </p>
 
         {/* Iconos */}

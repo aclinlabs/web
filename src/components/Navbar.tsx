@@ -1,11 +1,21 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  }
+
+  const linkClass = (href: string) =>
+    `transition ${isActive(href) ? "text-white border-b-2 border-white pb-0.5" : "text-white/90 hover:text-white"}`;
 
   return (
     <nav className="bg-[#087849] sticky top-0 z-50 shadow-md">
@@ -15,14 +25,13 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop menu */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-white">
-          <Link href="/" className="hover:text-green-200 transition">Inicio</Link>
-          <Link href="/examenes" className="hover:text-green-200 transition">Exámenes</Link>
-          <Link href="/cotizaciones" className="hover:text-green-200 transition">Cotizaciones</Link>
-          <Link href="/sucursales" className="hover:text-green-200 transition">Sucursales</Link>
-          <Link href="/nosotros" className="hover:text-green-200 transition">Nosotros</Link>
-          <Link href="/metodologias" className="hover:text-green-200 transition">Metodologías</Link>
-          <Link href="/contacto" className="hover:text-green-200 transition">Contacto</Link>
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+          <Link href="/" className={linkClass("/")}>Inicio</Link>
+          <Link href="/examenes" className={linkClass("/examenes")}>Exámenes</Link>
+          <Link href="/cotizaciones" className={linkClass("/cotizaciones")}>Cotizaciones</Link>
+          <Link href="/sucursales" className={linkClass("/sucursales")}>Sucursales</Link>
+          <Link href="/nosotros" className={linkClass("/nosotros")}>Nosotros</Link>
+          <Link href="/contacto" className={linkClass("/contacto")}>Contacto</Link>
           <a
             href="https://pacientes.aclin.cl/resultados/"
             target="_blank"
@@ -41,14 +50,13 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-[#065e39] px-4 py-4 flex flex-col gap-4 text-sm font-medium text-white border-t border-green-700">
-          <Link href="/" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Inicio</Link>
-          <Link href="/examenes" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Exámenes</Link>
-          <Link href="/cotizaciones" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Cotizaciones</Link>
-          <Link href="/sucursales" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Sucursales</Link>
-          <Link href="/nosotros" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Nosotros</Link>
-          <Link href="/metodologias" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Metodologías</Link>
-          <Link href="/contacto" onClick={() => setOpen(false)} className="hover:text-green-200 transition">Contacto</Link>
+        <div className="md:hidden bg-[#065e39] px-4 py-4 flex flex-col gap-4 text-sm font-medium border-t border-green-700">
+          <Link href="/" onClick={() => setOpen(false)} className={linkClass("/")}>Inicio</Link>
+          <Link href="/examenes" onClick={() => setOpen(false)} className={linkClass("/examenes")}>Exámenes</Link>
+          <Link href="/cotizaciones" onClick={() => setOpen(false)} className={linkClass("/cotizaciones")}>Cotizaciones</Link>
+          <Link href="/sucursales" onClick={() => setOpen(false)} className={linkClass("/sucursales")}>Sucursales</Link>
+          <Link href="/nosotros" onClick={() => setOpen(false)} className={linkClass("/nosotros")}>Nosotros</Link>
+          <Link href="/contacto" onClick={() => setOpen(false)} className={linkClass("/contacto")}>Contacto</Link>
           <a
             href="https://pacientes.aclin.cl/resultados/"
             className="bg-white text-[#087849] px-4 py-2 rounded-full text-center font-bold hover:bg-green-50 transition"
