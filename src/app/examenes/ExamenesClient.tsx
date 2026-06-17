@@ -50,7 +50,19 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
             </button>
           )}
         </div>
-        <ul className="flex flex-row flex-wrap gap-x-4 gap-y-1 md:flex-col md:space-y-1">
+        {/* Mobile: dropdown */}
+        <select
+          value={catFilter}
+          onChange={(e) => handleCat(e.target.value)}
+          className="md:hidden w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#087849] bg-white"
+        >
+          <option value="Todos">Ver Todo</option>
+          {categorias.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+        {/* Desktop: lista */}
+        <ul className="hidden md:flex md:flex-col md:space-y-1">
           <li>
             <button
               onClick={() => handleCat("Todos")}
@@ -75,14 +87,14 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
       {/* Tabla con scroll */}
       <div className="flex-1 min-w-0">
         <div className="rounded-xl overflow-hidden border border-gray-200">
-          <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
-            <table className="w-full text-sm min-w-[600px]">
+          <div className="overflow-y-auto max-h-[600px]">
+            <table className="w-full text-sm">
               <thead className="sticky top-0">
                 <tr className="bg-[#087849] text-white">
-                  <th className="text-left px-4 py-3 font-semibold">Nombre</th>
-                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Preparación del paciente</th>
-                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell whitespace-nowrap">Plazo de entrega</th>
-                  <th className="text-left px-4 py-3 font-semibold">Código</th>
+                  <th className="text-left px-3 py-3 font-semibold">Nombre</th>
+                  <th className="text-left px-3 py-3 font-semibold">Preparación del paciente</th>
+                  <th className="text-left px-3 py-3 font-semibold">Plazo de entrega</th>
+                  <th className="text-left px-3 py-3 font-semibold">Código</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,16 +107,16 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
                 ) : (
                   filtered.map((e, i) => (
                     <tr key={e.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f0f8f4]"}>
-                      <td className="px-4 py-3 text-gray-900 font-medium">{e.nombre}</td>
-                      <td className="px-4 py-3 text-gray-900 hidden md:table-cell">
+                      <td className="px-3 py-3 text-gray-900 font-medium">{e.nombre}</td>
+                      <td className="px-3 py-3 text-gray-900">
                         {e.preparacion
                           ? (e.preparacion.startsWith("http") || e.preparacion.toLowerCase().endsWith(".pdf")
                               ? <a href={e.preparacion} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline">Ver PDF</a>
                               : e.preparacion)
                           : "–"}
                       </td>
-                      <td className="px-4 py-3 text-gray-900 hidden md:table-cell whitespace-nowrap">{e.tiempo || "–"}</td>
-                      <td className="px-4 py-3 text-gray-600">{e.codigo || "–"}</td>
+                      <td className="px-3 py-3 text-gray-900">{e.tiempo || "–"}</td>
+                      <td className="px-3 py-3 text-gray-600">{e.codigo || "–"}</td>
                     </tr>
                   ))
                 )}

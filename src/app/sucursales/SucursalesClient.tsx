@@ -75,7 +75,91 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
 
   return (
     <>
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    {/* ── MOBILE LAYOUT ── */}
+    <div className="md:hidden">
+      {/* Cabecera verde */}
+      <div className="bg-[#087849] text-white text-center px-6 py-10">
+        <h1 className="text-3xl font-black mb-3">¡Visítenos!</h1>
+        <p className="text-sm text-green-100 leading-relaxed">
+          Cada día cerca de usted.<br />Los esperamos en su sucursal más cercana.
+        </p>
+      </div>
+
+      {/* Imagen de la sucursal activa */}
+      {selected?.imagen ? (
+        <img src={selected.imagen} alt={selected.nombre} className="w-full h-56 object-cover" />
+      ) : (
+        <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+          Seleccione una sucursal para ver su imagen
+        </div>
+      )}
+
+      {/* Listado en caja blanca */}
+      <div className="px-4 py-6">
+        {/* Buscador */}
+        <div className="flex mb-4">
+          <input
+            type="text"
+            placeholder="Buscar por nombre o ciudad"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-l text-sm focus:outline-none focus:ring-1 focus:ring-[#087849]"
+          />
+          <button className="bg-[#087849] text-white px-3 py-2 rounded-r hover:bg-[#065e39] transition">
+            <Search size={16} />
+          </button>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-[#087849] text-white px-4 py-3 text-sm font-semibold text-center">
+            Número de sucursales: {filtered.length}
+          </div>
+          {ciudades.map((ciudad) => {
+            const citySucursales = filtered.filter((s) => s.ciudad === ciudad);
+            if (citySucursales.length === 0) return null;
+            const isOpen = openCity === ciudad;
+            return (
+              <div key={ciudad}>
+                <button
+                  onClick={() => toggleCity(ciudad)}
+                  className={`w-full text-center px-4 py-3 text-sm border-b border-gray-100 transition ${
+                    isOpen ? "bg-[#087849] text-white font-semibold" : "text-gray-700 hover:bg-green-50"
+                  }`}
+                >
+                  {ciudad}
+                </button>
+                {isOpen && citySucursales.map((s) => (
+                  <div
+                    key={s.id}
+                    className="px-4 py-4 bg-gray-50 border-b border-gray-100 cursor-pointer hover:bg-green-50 transition text-center"
+                    onClick={() => selectSucursal(s)}
+                  >
+                    <p className="font-bold text-sm text-gray-900 mb-1">{s.nombre}</p>
+                    <p className="text-xs text-gray-500 mb-1">{s.direccion}</p>
+                    {s.email && <p className="text-xs text-gray-500 mb-2">{s.email}</p>}
+                    {s.horarioClinica && (
+                      <div className="mt-2 border-t border-gray-200 pt-2 text-left">
+                        <p className="text-xs font-bold text-[#087849] mb-0.5">🧪 Horario clínica</p>
+                        <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioClinica}</p>
+                      </div>
+                    )}
+                    {s.horarioAdmin && (
+                      <div className="mt-2 text-left">
+                        <p className="text-xs font-bold text-[#087849] mb-0.5">📋 Horario administrativo</p>
+                        <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioAdmin}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+
+    {/* ── DESKTOP LAYOUT ── */}
+    <div className="hidden md:block max-w-7xl mx-auto px-4 py-8">
       {/* Título */}
       <h1
         className="text-[#087849] mb-6"
@@ -139,15 +223,15 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
                       </p>
                     )}
                     {s.horarioClinica && (
-                        <div className="mt-3 border-t border-gray-200 pt-2">
-                          <p className="text-xs font-bold text-[#087849] mb-0.5">🧪 Horario de atención clínica</p>
-                          <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioClinica}</p>
-                        </div>
-                      )}
-                      {s.horarioAdmin && (
-                        <div className="mt-2">
-                          <p className="text-xs font-bold text-[#087849] mb-0.5">📋 Horario de atención administrativa</p>
-                          <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioAdmin}</p>
+                      <div className="mt-3 border-t border-gray-200 pt-2">
+                        <p className="text-xs font-bold text-[#087849] mb-0.5">🧪 Horario de atención clínica</p>
+                        <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioClinica}</p>
+                      </div>
+                    )}
+                    {s.horarioAdmin && (
+                      <div className="mt-2">
+                        <p className="text-xs font-bold text-[#087849] mb-0.5">📋 Horario de atención administrativa</p>
+                        <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">{s.horarioAdmin}</p>
                       </div>
                     )}
                   </div>
@@ -159,13 +243,8 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
 
         {/* Imagen grande de la sucursal + mapa pequeño en esquina */}
         <div className="flex-1 relative overflow-hidden bg-white flex items-center justify-start">
-          {/* Imagen grande */}
           {selected?.imagen ? (
-            <img
-              src={selected.imagen}
-              alt={selected.nombre}
-              className="max-w-full max-h-full object-contain"
-            />
+            <img src={selected.imagen} alt={selected.nombre} className="max-w-full max-h-full object-contain" />
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
               Selecciona una sucursal
@@ -218,7 +297,7 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
           <img src="/sucursales.jpg" alt="Casa Matriz Aclin" className="w-full h-full object-cover" style={{ minHeight: "320px" }} />
         </div>
         {/* Info */}
-        <div className="md:w-1/2 bg-[#3a7a52] text-white px-10 py-10 flex flex-col justify-center">
+        <div className="md:w-1/2 bg-[#087849] text-white px-10 py-10 flex flex-col justify-center">
           <h2 className="text-3xl font-black mb-6">Casa Matriz</h2>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">

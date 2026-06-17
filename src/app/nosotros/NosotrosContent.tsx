@@ -57,7 +57,7 @@ function EspecialidadesSection() {
           <div key={item.label}>
             <button
               onClick={() => setOpen(open === item.label ? null : item.label)}
-              className="w-full flex items-center gap-3 bg-[#3a7a52] text-white px-4 py-4 hover:bg-[#2d6342] transition text-left"
+              className="w-full flex items-center gap-3 bg-[#087849] text-white px-4 py-4 hover:bg-[#065e39] transition text-left"
             >
               <div className="shrink-0">{item.icon}</div>
               <span className="text-sm font-semibold leading-snug flex-1">{item.label}</span>
@@ -111,18 +111,18 @@ export default function NosotrosContent() {
       </section>
 
       {/* Sección 2: Nuestros Profesionales */}
-      <section className="relative mt-6">
+      <section className="relative mt-10">
         <img src="/profesionales.jpg" alt="Nuestros Profesionales" className="w-full object-cover" style={{ maxHeight: "480px" }} />
-        <div className="absolute top-0 left-0 bg-[#087849] text-white text-sm font-bold px-4 py-2">
+        <div className="absolute -top-4 left-0 bg-[#087849] text-white text-sm font-bold px-4 py-2 rounded-r">
           Nuestros Profesionales
         </div>
       </section>
 
       {/* Sección 3: Nuestros Fundadores */}
-      <section className="mt-6">
+      <section className="mt-10">
         <div className="relative">
           <img src="/profesionales_2.jpg" alt="Nuestros Fundadores" className="w-full object-cover" style={{ maxHeight: "480px" }} />
-          <div className="absolute top-0 left-0 bg-[#087849] text-white text-sm font-bold px-4 py-2">
+          <div className="absolute -top-4 left-0 bg-[#087849] text-white text-sm font-bold px-4 py-2 rounded-r">
             Nuestros Fundadores
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function NosotrosContent() {
               {[
                 { year: "1987", desc: "Fundación de ACLIN con 5 funcionarios." },
                 { year: "1992", desc: "Apertura de la primera sucursal en Limache." },
-                { year: "1993", desc: "Apertura primera sucursal Aclin Viña Norte.", featured: true },
+                { year: "1993", desc: "Apertura primera sucursal Aclin Viña Norte." },
                 { year: "1995", desc: "Primera enfermera universitaria contratada." },
                 { year: "1999", desc: "Apertura sucursal CEDI (14 norte)." },
                 { year: "2001", desc: "Apertura sucursal en Quilpué." },
@@ -196,13 +196,16 @@ export default function NosotrosContent() {
                 { year: "2018", desc: "Creación de ATL QUÍMICA." },
                 { year: "2019", desc: "Apertura sucursal Casa Blanca." },
                 { year: "2022", desc: "Intranet y segunda sucursal La Calera." },
-              ].map((item) => (
-                <div key={item.year} className="relative z-10 flex flex-col items-center text-center px-5" style={{ width: "200px" }}>
-                  <p className={`text-[#087849] leading-none mb-2 ${item.featured ? "text-5xl font-black" : "text-lg font-bold"}`}>{item.year}</p>
-                  <p className="text-gray-700 text-xs leading-snug mb-5" style={{ minHeight: "48px" }}>{item.desc}</p>
-                  <div className="w-3 h-3 rounded-full border-2 border-[#087849] bg-white shrink-0" />
-                </div>
-              ))}
+              ].map((item, idx) => {
+                const fontSize = 14 + idx * 2;
+                return (
+                  <div key={item.year} className="relative z-10 flex flex-col items-center text-center px-5" style={{ width: "200px" }}>
+                    <p className="text-[#087849] leading-none mb-2 font-bold" style={{ fontSize: `${fontSize}px` }}>{item.year}</p>
+                    <p className="text-gray-700 text-xs leading-snug mb-5" style={{ minHeight: "48px" }}>{item.desc}</p>
+                    <div className="w-3 h-3 rounded-full border-2 border-[#087849] bg-white shrink-0" />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

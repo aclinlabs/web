@@ -44,19 +44,18 @@ export default function HeroCotizacionForm() {
     <section className="relative w-full pb-16">
       {/* Imagen hero — sin oscurecer */}
       <div
-        className="absolute top-0 left-0 w-full"
+        className="absolute top-0 left-0 w-full h-[200px] md:h-[520px]"
         style={{
           backgroundImage: "url('/cotizacion.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
-          height: "520px",
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-64 flex flex-col md:flex-row items-start">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-6 pt-36 md:pt-64 flex flex-col md:flex-row items-start">
 
         {/* LEFT — texto + iconos */}
-        <div className="md:w-[32%] bg-[#065e39] rounded-l-2xl p-8 flex flex-col justify-between text-white relative overflow-visible" style={{paddingBottom: "216px", marginTop: "150px"}}>
+        <div className="w-full md:w-[32%] bg-[#065e39] rounded-t-2xl md:rounded-t-none md:rounded-l-2xl p-8 flex flex-col justify-between text-white relative overflow-visible" style={{paddingBottom: "80px", marginTop: "0"}}>
           <div>
             <h2 className="mb-4" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontWeight: 700, fontSize: "48px", lineHeight: "57px", letterSpacing: "0%", color: "#FFFFFF" }}>
               Cotice sus<br />exámenes
@@ -83,7 +82,7 @@ export default function HeroCotizacionForm() {
         </div>
 
         {/* RIGHT — formulario */}
-        <div className="bg-[#e8f3ee] rounded-r-2xl p-8 pb-14" style={{width: "735px", minHeight: "640px"}}>
+        <div className="bg-[#e8f4ee] rounded-b-2xl md:rounded-b-none md:rounded-r-2xl p-8 pb-14 flex-1 w-full" style={{minHeight: "640px"}}>
           {submitted ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 py-10 text-center">
               <div className="w-16 h-16 rounded-full bg-[#087849]/20 flex items-center justify-center">
@@ -100,7 +99,7 @@ export default function HeroCotizacionForm() {
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className={labelClass}>Nombre <span className="text-red-500">*</span></label>
                   <input type="text" name="nombre" required value={form.nombre} onChange={handleChange}
@@ -129,11 +128,11 @@ export default function HeroCotizacionForm() {
                   <input type="email" name="correo" required value={form.correo} onChange={handleChange}
                     placeholder="Ingrese su correo electrónico" className={inputClass} />
                 </div>
-                <div className="row-span-3">
+                <div className="md:row-span-3">
                   <label className={labelClass}>Comentarios / Preguntas</label>
                   <textarea name="comentarios" value={form.comentarios} onChange={handleChange}
                     placeholder="Escribe tu comentario"
-                    className={`${inputClass} h-[calc(100%-20px)] min-h-[108px] resize-none`} />
+                    className={`${inputClass} md:h-[calc(100%-20px)] min-h-[108px] resize-none`} />
                 </div>
                 <div>
                   <label className={labelClass}>Fecha de nacimiento <span className="text-red-500">*</span></label>

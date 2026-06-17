@@ -12,12 +12,11 @@ export default async function SucursalesPage() {
     <div className="min-h-screen bg-white">
       {/* Hero */}
       <div
-        className="relative w-full"
+        className="relative w-full h-[200px] md:h-[320px]"
         style={{
           backgroundImage: "url('/sucursales.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "320px",
         }}
       >
         <div className="absolute inset-0 bg-black/20" />
