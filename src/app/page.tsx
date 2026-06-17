@@ -77,7 +77,7 @@ export default async function HomePage() {
         />
         <div className="relative max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-stretch">
           {/* Texto izquierda */}
-          <div className="md:w-5/12 py-16 flex flex-col justify-center">
+          <div className="md:w-5/12 py-16 flex flex-col justify-center items-center md:items-start text-center md:text-left">
             <div className="text-5xl md:text-8xl font-black leading-none">37</div>
             <div className="text-2xl md:text-3xl font-bold mt-1 leading-tight">años de experiencia</div>
             <p className="text-green-100 mt-4 text-sm leading-relaxed max-w-xs">Brindando un servicio de excelencia, con ética, profesionalismo e innovación tecnológica, garantizando precisión y seguridad en cada resultado.</p>
