@@ -34,10 +34,10 @@ export default async function HomePage() {
 
       {/* Quick actions — mitad sobre la imagen, mitad sobre el blanco */}
       <div
-        className="relative z-10 -mt-10"
+        className="relative z-10 md:-mt-10"
         style={{ background: "linear-gradient(to bottom, transparent 40px, white 40px)" }}
       >
-        <div className="max-w-3xl mx-auto px-4 pt-0 pb-8 grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8 text-center">
+        <div className="max-w-3xl mx-auto px-4 py-8 md:pt-0 md:pb-8 grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8 text-center">
           {([
             { icon: <Home size={32} className="text-white" />, label: "Atención a\ndomicilio", href: "/atencion-domicilio" },
             {
