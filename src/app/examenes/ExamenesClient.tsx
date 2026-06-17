@@ -87,8 +87,8 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
       {/* Tabla con scroll */}
       <div className="flex-1 min-w-0">
         <div className="rounded-xl overflow-hidden border border-gray-200">
-          <div className="overflow-y-auto max-h-[600px]">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
+            <table className="w-full text-sm min-w-[480px]">
               <thead className="sticky top-0">
                 <tr className="bg-[#087849] text-white">
                   <th className="text-left px-3 py-3 font-semibold">Nombre</th>
