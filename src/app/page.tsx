@@ -23,9 +23,18 @@ export default async function HomePage() {
           backgroundPosition: "center 20%",
         }}
       >
-        <div className="max-w-7xl mx-auto px-5 md:px-8 h-full flex flex-col items-center md:items-start justify-center gap-4 md:gap-5 pb-10">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight drop-shadow-xl text-center md:text-left" style={{textShadow: "2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6)"}}>Su salud,<br />nuestra prioridad</h1>
-          <p className="text-base md:text-lg font-semibold text-white max-w-md text-center md:text-left" style={{textShadow: "1px 1px 6px rgba(0,0,0,0.9)"}}>Lo acompañamos con exámenes confiables,<br className="hidden md:block" />resultados claros y una atención de primera.</p>
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative max-w-7xl mx-auto px-5 md:px-8 h-full flex flex-col items-center md:items-start justify-center gap-4 md:gap-5 pt-8 md:pt-0 pb-10">
+          <h1
+            className="text-3xl font-black leading-tight text-center"
+            style={{
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            <span className="md:hidden">Su salud,<br />nuestra prioridad</span>
+            <span className="hidden md:inline" style={{ fontWeight: 700, fontSize: "48px", lineHeight: "57px" }}>Su salud, nuestra prioridad</span>
+          </h1>
+          <p className="text-base md:text-lg font-semibold text-white max-w-md text-center md:text-left">Lo acompañamos con exámenes confiables,<br className="hidden md:block" />resultados claros y una atención de primera.</p>
           <Link href="/sucursales" className="w-fit bg-[#087849] text-white px-7 md:px-10 py-3 rounded-full font-semibold text-sm md:text-base hover:bg-[#065e39] transition shadow-lg mx-auto md:mx-0">
             Encuentre su sucursal aquí
           </Link>
@@ -65,45 +74,49 @@ export default async function HomePage() {
       </div>
 
       {/* STATS */}
-      <section className="bg-[#087849] text-white relative overflow-hidden">
-        {/* Imagen fondo lado derecho — llega a la mitad de las cards */}
-        <div
-          className="absolute top-0 right-0 w-1/2 h-full hidden md:block"
-          style={{
-            backgroundImage: "url('/stats-bg.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-stretch">
-          {/* Texto izquierda */}
-          <div className="md:w-5/12 py-16 flex flex-col justify-center items-center md:items-start text-center md:text-left">
-            <div className="text-5xl md:text-8xl font-black leading-none">37</div>
-            <div className="text-2xl md:text-3xl font-bold mt-1 leading-tight">años de experiencia</div>
-            <p className="text-green-100 mt-4 text-sm leading-relaxed max-w-xs">Brindando un servicio de excelencia, con ética, profesionalismo e innovación tecnológica, garantizando precisión y seguridad en cada resultado.</p>
-            <Link href="/nosotros" className="inline-block mt-5 bg-white text-[#087849] px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition w-fit">¡Conózcanos!</Link>
-          </div>
-          {/* Cards encima de la imagen */}
-          <div className="md:w-7/12 py-8 md:py-16 flex flex-col gap-4 justify-center md:pl-8">
-            {[
-              { icon: MapPin, title: "22 Sucursales", desc: "Estamos presentes por\ntoda la región." },
-              { icon: Baby, title: "Enfermeras Pediátricas", desc: "Profesionales con\nexperiencia en cuidado infantil." },
-              { icon: FlaskConical, title: "+400 Exámenes", desc: "Amplia gama de exámenes\npara monitorear su salud." },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-xl p-4 md:p-5 flex items-start gap-4 shadow-md w-full md:max-w-[390px]">
-                <div className="w-11 h-11 rounded-full bg-[#087849]/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon size={22} className="text-[#087849]" />
+      <section className="text-white">
+        <div className="flex flex-col md:flex-row">
+          {/* Verde — 2/3 del ancho */}
+          <div className="bg-[#087849] w-full md:w-2/3 flex flex-col md:flex-row items-stretch">
+            {/* Texto izquierda */}
+            <div className="md:w-[72%] px-8 md:pl-28 md:pr-8 py-12 md:py-16 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+              <div className="text-[64px] md:text-[80px] leading-none md:leading-[57px] font-bold" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontWeight: 700 }}>37</div>
+              <div className="mt-4 text-2xl md:text-3xl font-bold leading-tight md:whitespace-nowrap" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", letterSpacing: "0.02em" }}>años de experiencia</div>
+              <p className="text-green-100 mt-4 text-base md:text-lg leading-relaxed" style={{ letterSpacing: "0.1em" }}>Brindando un servicio de excelencia, con ética, profesionalismo e innovación tecnológica, garantizando precisión y seguridad en cada resultado.</p>
+              <Link href="/nosotros" className="inline-block mt-5 bg-white text-[#087849] px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition w-fit">¡Conózcanos!</Link>
+            </div>
+            {/* Cards */}
+            <div className="md:w-[48%] px-8 md:pl-0 md:pr-0 py-8 md:py-16 flex flex-col gap-4 justify-center md:items-end relative z-10 md:translate-x-[80px]">
+              {[
+                { icon: MapPin, title: "22 Sucursales", desc: "Estamos presentes por toda la región\npara estar siempre cerca de usted." },
+                { icon: Baby, title: "Enfermeras Pediátricas", desc: "Profesionales con experiencia en cuidado infantil." },
+                { icon: FlaskConical, title: "+400 Exámenes", desc: "Amplia gama de exámenes para monitorear su salud." },
+              ].map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="bg-white rounded-xl p-3 md:p-4 flex items-start gap-3 shadow-md w-full max-w-[400px]">
+                  <div className="w-9 h-9 rounded-full bg-[#087849]/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon size={18} className="text-[#087849]" />
+                  </div>
+                  <div>
+                    <h3
+                      className="font-semibold text-[#087849]"
+                      style={{ fontFamily: "var(--font-montserrat)", fontSize: "18px", lineHeight: "24px" }}
+                    >{title}</h3>
+                    <p className="text-gray-500 text-xs mt-0.5 leading-snug whitespace-pre-line">{desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3
-                    className="font-semibold text-[#087849]"
-                    style={{ fontFamily: "var(--font-montserrat)", fontSize: "24px", lineHeight: "31px" }}
-                  >{title}</h3>
-                  <p className="text-gray-500 text-sm mt-1 leading-snug whitespace-pre-line">{desc}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          {/* Foto — 1/4 del ancho, solo desktop */}
+          <div
+            className="hidden md:block md:w-1/3 shrink-0"
+            style={{
+              backgroundImage: "url('/stats-bg.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              minHeight: "300px",
+            }}
+          />
         </div>
       </section>
 
@@ -118,17 +131,17 @@ export default async function HomePage() {
           >Prepárese en 3 pasos</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
-              { icon: <FileText size={28} />, title: "Revise las indicaciones", desc: "Verifique instrucciones previas, ayuno o preparación especial, según su examen." },
-              { icon: <IdCard size={28} />, title: "Traiga sus documentos", desc: "Atención por orden de llegada. Traiga su orden médica y carnet de identidad." },
-              { icon: <MessageCircleQuestion size={28} />, title: "Consulte dudas", desc: "Nuestro equipo está disponible para orientarle con cualquier duda que tenga." },
+              { icon: <FileText size={36} />, title: "Revise las indicaciones", desc: "Verifique instrucciones previas, ayuno o preparación especial, según su examen." },
+              { icon: <IdCard size={36} />, title: "Traiga sus documentos", desc: "Atención por orden de llegada. Traiga su orden médica y carnet de identidad." },
+              { icon: <MessageCircleQuestion size={36} />, title: "Consulte dudas", desc: "Nuestro equipo está disponible para orientarle con cualquier duda que tenga." },
             ].map(({ icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                <div className="w-14 h-14 rounded-full bg-[#087849] text-white flex items-center justify-center mx-auto mb-4">{icon}</div>
+              <div key={title} className="p-6 md:p-8">
+                <div className="w-20 h-20 rounded-full bg-[#087849] text-white flex items-center justify-center mx-auto mb-4">{icon}</div>
                 <h3
                   className="mb-2 text-[#087849]"
                   style={{ fontFamily: "var(--font-montserrat)", fontWeight: 600, fontSize: "24px", lineHeight: "31px" }}
                 >{title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                <p className="text-gray-700 text-sm leading-relaxed font-bold">{desc}</p>
               </div>
             ))}
           </div>

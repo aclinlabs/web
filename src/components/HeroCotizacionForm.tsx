@@ -44,7 +44,7 @@ export default function HeroCotizacionForm() {
     <section className="relative w-full pb-16">
       {/* Imagen hero — sin oscurecer */}
       <div
-        className="absolute top-0 left-0 w-full h-[200px] md:h-[520px]"
+        className="absolute top-0 left-0 w-full h-[200px] md:h-[340px]"
         style={{
           backgroundImage: "url('/cotizacion.jpg')",
           backgroundSize: "cover",
@@ -52,10 +52,10 @@ export default function HeroCotizacionForm() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 md:px-6 pt-36 md:pt-64 flex flex-col md:flex-row items-start">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-6 pt-36 md:pt-36 flex flex-col md:flex-row items-start">
 
         {/* LEFT — texto + iconos */}
-        <div className="w-full md:w-[32%] bg-[#065e39] rounded-t-2xl md:rounded-t-none md:rounded-l-2xl p-8 flex flex-col justify-between text-white relative overflow-visible" style={{paddingBottom: "80px", marginTop: "0"}}>
+        <div className="w-full md:w-[32%] bg-[#065e39] rounded-t-2xl md:rounded-t-none md:rounded-l-2xl p-8 flex flex-col justify-between text-white relative overflow-visible md:mt-20" style={{paddingBottom: "80px"}}>
           <div>
             <h2 className="mb-4" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontWeight: 700, fontSize: "48px", lineHeight: "57px", letterSpacing: "0%", color: "#FFFFFF" }}>
               Cotice sus<br />exámenes
@@ -64,8 +64,8 @@ export default function HeroCotizacionForm() {
               Ahorra tiempo y cotiza con nosotros, complete su información y recibirá en su correo la información en la brevedad.
             </p>
           </div>
-          {/* Iconos cortados por la mitad en el borde inferior */}
-          <div className="absolute bottom-0 translate-y-1/2 left-0 w-full flex gap-8 justify-start px-6">
+          {/* Iconos cortados por la mitad en el borde inferior — solo desktop */}
+          <div className="hidden md:flex absolute bottom-0 translate-y-1/2 left-0 w-full gap-8 justify-start px-6">
             <Link href="/contacto" className="flex flex-col items-center gap-2 group">
               <div className="w-[74px] h-[74px] rounded-full bg-[#087849] border-4 border-white flex items-center justify-center group-hover:bg-[#065e39] transition shadow-md">
                 <Headphones size={30} className="text-white" />
@@ -82,7 +82,7 @@ export default function HeroCotizacionForm() {
         </div>
 
         {/* RIGHT — formulario */}
-        <div className="bg-[#e8f4ee] rounded-b-2xl md:rounded-b-none md:rounded-r-2xl p-8 pb-14 flex-1 w-full" style={{minHeight: "640px"}}>
+        <div className="relative bg-[#e8f4ee] rounded-b-2xl md:rounded-2xl p-8 pb-20 md:pb-14 flex-1 w-full" style={{minHeight: "640px"}}>
           {submitted ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 py-10 text-center">
               <div className="w-16 h-16 rounded-full bg-[#087849]/20 flex items-center justify-center">
@@ -163,6 +163,22 @@ export default function HeroCotizacionForm() {
               </div>
             </form>
           )}
+
+          {/* Iconos mobile — mitad fuera de la caja */}
+          <div className="md:hidden absolute bottom-0 translate-y-1/2 left-0 w-full flex gap-10 justify-center px-6">
+            <Link href="/sucursales" className="flex flex-col items-center gap-2 group">
+              <div className="w-[74px] h-[74px] rounded-full bg-[#087849] border-4 border-white flex items-center justify-center group-hover:bg-[#065e39] transition shadow-md">
+                <Home size={30} className="text-white" />
+              </div>
+              <span className="text-xs text-center leading-snug text-[#087849] font-semibold mt-1">Encuentre<br />su sucursal</span>
+            </Link>
+            <Link href="/contacto" className="flex flex-col items-center gap-2 group">
+              <div className="w-[74px] h-[74px] rounded-full bg-[#087849] border-4 border-white flex items-center justify-center group-hover:bg-[#065e39] transition shadow-md">
+                <Headphones size={30} className="text-white" />
+              </div>
+              <span className="text-xs text-center leading-snug text-[#087849] font-semibold mt-1">¿Tiene dudas?<br />¡Contáctanos!</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

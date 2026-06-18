@@ -83,6 +83,9 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
         <p className="text-sm text-green-100 leading-relaxed">
           Cada día cerca de usted.<br />Los esperamos en su sucursal más cercana.
         </p>
+        <a href="/contacto" className="inline-block mt-5 bg-white text-[#087849] px-6 py-2 rounded-full text-sm font-bold hover:bg-green-50 transition">
+          ¡Contáctenos!
+        </a>
       </div>
 
       {/* Imagen de la sucursal activa */}

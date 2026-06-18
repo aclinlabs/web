@@ -4,45 +4,71 @@ import { useState } from "react";
 function EspecialidadesSection() {
   const [open, setOpen] = useState<string | null>(null);
 
-  const especialidades = [
+  type Profesional = { nombre: string; titulo: string; cargo?: string };
+  const especialidades: { label: string; profesionales: Profesional[]; icon: React.ReactNode }[] = [
     {
       label: "Administración",
-      profesionales: ["Equipo administrativo especializado"],
+      profesionales: [
+        { nombre: "Diego Cabrera L.", titulo: "Tecnólogo Médico", cargo: "Gerente de Administración Clínica" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3"/><path d="M6 20v-1a6 6 0 0 1 12 0v1"/></svg>,
     },
     {
       label: "Bacteriología",
-      profesionales: ["Tecnólogo médico especialista en microbiología"],
+      profesionales: [
+        { nombre: "Alfredo Montenegro V.", titulo: "Tecnólogo Médico", cargo: "Jefe Laboratorio Bacteriología" },
+        { nombre: "Daniel Carvajal B.", titulo: "Tecnólogo Médico" },
+        { nombre: "Christian Zubieta C.", titulo: "Tecnólogo Médico" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>,
     },
     {
       label: "Bioquímica Molecular",
-      profesionales: ["Bioquímico especialista en genética molecular"],
+      profesionales: [
+        { nombre: "Equipo especializado", titulo: "Bioquímica molecular y genética" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="12" cy="10" r="2"/><line x1="7" y1="6" x2="17" y2="6"/><line x1="12" y1="8" x2="5" y2="6"/><line x1="12" y1="8" x2="19" y2="6"/><line x1="12" y1="12" x2="12" y2="17"/></svg>,
     },
     {
       label: "Bioquímica Clínica y Hormonas",
-      profesionales: ["Químico Farmacéutico especialista en endocrinología"],
+      profesionales: [
+        { nombre: "Sergio Guerrero B.", titulo: "Químico Farmacéutico", cargo: "Jefe Laboratorio Bioquímica Clínica" },
+        { nombre: "Álvaro Cuevas B.", titulo: "Químico Farmacéutico" },
+        { nombre: "Roberto Urízar Z.", titulo: "Tecnólogo Médico" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 3 19.5 7.5 19.5 16.5 12 21 4.5 16.5 4.5 7.5"/><circle cx="12" cy="12" r="3"/></svg>,
     },
     {
       label: "Cromatología Líquida de Alta Resolución (HPLC)",
-      profesionales: ["Claudia Parada L.", "Química Farmacéutica", "Jefe Laboratorio Cromatografía"],
+      profesionales: [
+        { nombre: "Claudia Parada L.", titulo: "Químico Farmacéutico", cargo: "Jefe Laboratorio Cromatografía" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="13" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/><line x1="3" y1="20" x2="21" y2="20"/></svg>,
     },
     {
       label: "Enfermería",
-      profesionales: ["Enfermeras universitarias especializadas en toma de muestras"],
+      profesionales: [
+        { nombre: "Equipo de enfermería", titulo: "Enfermeras universitarias especializadas en toma de muestras" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8c0-1 .5-2 2-2h12c1.5 0 2 1 2 2v2H4V8z"/><rect x="4" y="10" width="16" height="10" rx="1"/><line x1="12" y1="13" x2="12" y2="17"/><line x1="10" y1="15" x2="14" y2="15"/></svg>,
     },
     {
       label: "Hematología y Hemostasia",
-      profesionales: ["Tecnólogo médico especialista en hematología"],
+      profesionales: [
+        { nombre: "Sergio Tapia C.", titulo: "Médico Hematólogo", cargo: "Jefe Laboratorio Hematología" },
+        { nombre: "Alfredo Maturana E.", titulo: "Tecnólogo Médico" },
+        { nombre: "Nicolás Yañez A.", titulo: "Tecnólogo Médico" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>,
     },
     {
       label: "Inmunología",
-      profesionales: ["Bioquímico especialista en inmunología clínica"],
+      profesionales: [
+        { nombre: "Sabrina Soto S.", titulo: "Tecnólogo Médico", cargo: "Jefe Laboratorio Inmunología" },
+        { nombre: "Marcelo Tapia C.", titulo: "Químico Farmacéutico" },
+        { nombre: "Carlos Soto B.", titulo: "Tecnólogo Médico" },
+        { nombre: "Francisco Aguilera B.", titulo: "Tecnólogo Médico" },
+      ],
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.5C16.5 22.15 20 17.25 20 12V6L12 2z"/></svg>,
     },
   ];
@@ -69,9 +95,12 @@ function EspecialidadesSection() {
               </svg>
             </button>
             {open === item.label && (
-              <div className="bg-[#e8f4ee] px-4 py-3 border-l-2 border-[#087849]">
+              <div className="bg-[#e8f4ee] px-4 py-3 border-l-2 border-[#087849] space-y-3">
                 {item.profesionales.map((p, i) => (
-                  <p key={i} className="text-sm text-gray-900 leading-relaxed">{p}</p>
+                  <div key={i}>
+                    <p className="text-sm font-bold text-[#087849]">{p.nombre}</p>
+                    <p className="text-xs text-gray-600">{p.titulo}{p.cargo ? ` | ${p.cargo}` : ""}</p>
+                  </div>
                 ))}
               </div>
             )}
@@ -130,7 +159,7 @@ export default function NosotrosContent() {
           <div className="max-w-4xl mx-auto px-4 md:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-center">
             {[
               { nombre: "Marcelo Tapia Carrerev", cargo1: "Químico Farmacéutico", cargo2: "Director Técnico" },
-              { nombre: "Vicente Cid Krebs", cargo1: "Químico Farmacéutico", cargo2: "Gerente General" },
+              { nombre: "Vicente Cid Krebs", cargo1: "Químico Farmacéutico", cargo2: "" },
               { nombre: "Sergio Tapia Carrerev", cargo1: "Médico Hematólogo", cargo2: "Jefe Laboratorio Hematología" },
             ].map((f) => (
               <div key={f.nombre}>

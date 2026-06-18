@@ -128,8 +128,29 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
       </div>
     </div>
 
+    {/* Botones acceso rápido */}
+    <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 flex gap-8">
+      <a href="/cotizaciones" className="flex flex-col items-center gap-2 group">
+        <div className="w-20 h-20 rounded-full bg-[#087849] border-4 border-white shadow-lg flex items-center justify-center group-hover:bg-[#065e39] transition">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/>
+            <text x="12" y="13" textAnchor="middle" fontSize="7" fontWeight="bold" fill="white" stroke="none">$</text>
+          </svg>
+        </div>
+        <span className="text-xs text-center text-[#087849] font-semibold leading-snug">Cotice su<br />examen online</span>
+      </a>
+      <a href="/atencion-domicilio" className="flex flex-col items-center gap-2 group">
+        <div className="w-20 h-20 rounded-full bg-[#087849] border-4 border-white shadow-lg flex items-center justify-center group-hover:bg-[#065e39] transition">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <span className="text-xs text-center text-[#087849] font-semibold leading-snug">Atención a<br />domicilio</span>
+      </a>
+    </div>
+
     {/* Sección ¡Recuerde! */}
-    <div className="bg-[#e8f4ee] mt-10 py-10 px-6">
+    <div className="bg-[#e8f4ee] mt-0 py-10 px-6">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-black text-[#087849] mb-3">¡Recuerde!</h2>
         <p className="text-gray-900 mb-4 max-w-3xl">
@@ -157,25 +178,6 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
           <span className="whitespace-nowrap font-semibold">32 33 23 600</span>
         </p>
 
-        {/* Iconos */}
-        <div className="flex gap-10 mt-8">
-          <a href="/contacto" className="flex flex-col items-center gap-2 group">
-            <div className="w-20 h-20 rounded-full bg-[#087849] flex items-center justify-center group-hover:bg-[#065e39] transition">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.35 2 2 0 0 1 3.57 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.74a16 16 0 0 0 6.29 6.29l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-            </div>
-            <span className="text-xs text-center text-[#087849] font-semibold leading-snug">¿Tiene dudas?<br />¡Contáctenos!</span>
-          </a>
-          <a href="/sucursales" className="flex flex-col items-center gap-2 group">
-            <div className="w-20 h-20 rounded-full bg-[#087849] flex items-center justify-center group-hover:bg-[#065e39] transition">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-            </div>
-            <span className="text-xs text-center text-[#087849] font-semibold leading-snug">Encuentre su<br />sucursal</span>
-          </a>
-        </div>
       </div>
     </div>
     </>

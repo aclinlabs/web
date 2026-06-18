@@ -40,7 +40,7 @@ export default function ContactoForm() {
   const selectClass = "w-full border border-gray-300 rounded-lg px-4 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#087849] h-[52px]";
 
   return (
-    <section className="relative w-full pb-10 md:pb-16">
+    <section className="relative w-full pb-28 md:pb-4">
       {/* Imagen hero — menos altura */}
       <div
         className="absolute top-0 left-0 w-full h-[200px] md:h-[420px]"
@@ -53,12 +53,12 @@ export default function ContactoForm() {
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <div className="relative max-w-5xl mx-auto px-4 md:px-6 pt-32 md:pt-52 flex flex-col md:flex-row items-start">
+      <div className="relative max-w-6xl mx-auto px-4 md:px-6 pt-32 md:pt-36 flex flex-col md:flex-row items-start">
 
         {/* LEFT — panel verde sin opacidad */}
         <div
-          className="w-full md:w-[38%] bg-[#065e39] rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none p-6 md:p-8 flex flex-col justify-between text-white relative overflow-visible"
-          style={{ paddingBottom: "80px", marginTop: "0px" }}
+          className="w-full md:w-[38%] bg-[#065e39] rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none p-6 md:p-8 flex flex-col justify-between text-white relative overflow-visible md:mt-20"
+          style={{ paddingBottom: "80px" }}
         >
           <div>
             <h1 className="mb-4" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontWeight: 700, fontSize: "48px", lineHeight: "57px", letterSpacing: "0%", color: "#FFFFFF" }}>¡Hablemos!</h1>
@@ -87,7 +87,7 @@ export default function ContactoForm() {
           </div>
 
           {/* Iconos rellenos abajo */}
-          <div className="absolute bottom-0 translate-y-1/2 left-0 w-full flex justify-start px-6 z-10">
+          <div className="hidden md:flex absolute bottom-0 translate-y-1/2 left-0 w-full justify-start px-6 z-10">
             <Link href="/sucursales" className="flex flex-col items-center gap-2 group">
               <div className="w-[74px] h-[74px] rounded-full bg-[#087849] border-4 border-white flex items-center justify-center group-hover:bg-[#065e39] transition shadow-md">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -101,7 +101,7 @@ export default function ContactoForm() {
         </div>
 
         {/* RIGHT — formulario */}
-        <div className="bg-[#e8f4ee] rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none p-8 md:p-10 pb-10 md:pb-14 flex-1 mt-8 md:mt-0" style={{ minHeight: "540px" }}>
+        <div className="relative bg-[#e8f4ee] rounded-b-2xl md:rounded-2xl p-8 md:p-10 pb-24 md:pb-14 flex-1 w-full mt-0" style={{ minHeight: "540px" }}>
           {submitted ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 py-16 text-center">
               <div className="w-16 h-16 rounded-full bg-[#087849]/20 flex items-center justify-center">
@@ -169,12 +169,25 @@ export default function ContactoForm() {
               </div>
             </form>
           )}
+
+          {/* Ícono atención a domicilio mobile — mitad fuera de la caja */}
+          <div className="md:hidden absolute bottom-0 translate-y-1/2 left-0 w-full flex justify-end px-8 z-10">
+            <Link href="/atencion-domicilio" className="flex flex-col items-center gap-2 group">
+              <div className="w-[74px] h-[74px] rounded-full bg-[#087849] border-4 border-white flex items-center justify-center group-hover:bg-[#065e39] transition shadow-md">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
+              <span className="text-xs text-center leading-snug text-[#087849] font-semibold mt-1">Atención a<br />domicilio</span>
+            </Link>
+          </div>
         </div>
 
       </div>
 
       {/* Info de contacto — solo mobile, bajo el formulario */}
-      <div className="md:hidden max-w-5xl mx-auto px-4 pt-10 pb-4">
+      <div className="hidden max-w-5xl mx-auto px-4 pt-10 pb-4">
         <p className="font-bold text-sm text-gray-800 mb-3">Casa Matriz</p>
         <ul className="space-y-3 text-sm text-gray-700">
           <li className="flex items-center gap-2">

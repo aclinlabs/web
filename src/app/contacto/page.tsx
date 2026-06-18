@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Contacto – Aclin Laboratorio Clín
 
 export default function ContactoPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       <ContactoForm />
     </div>
   );
