@@ -61,7 +61,7 @@ export default function HeroCotizacionForm() {
               Cotice sus<br />exámenes
             </h2>
             <p className="text-green-100 text-sm leading-relaxed">
-              Ahorra tiempo y cotiza con nosotros, complete su información y recibirá en su correo la información en la brevedad.
+              Ahorre tiempo y cotice con nosotros, complete su información y recibirá en su correo la información en la brevedad.
             </p>
           </div>
           {/* Iconos cortados por la mitad en el borde inferior — solo desktop */}

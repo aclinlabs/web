@@ -78,7 +78,7 @@ export default function SucursalesClient({ sucursales, apiKey }: { sucursales: S
     {/* ── MOBILE LAYOUT ── */}
     <div className="md:hidden">
       {/* Cabecera verde */}
-      <div className="bg-[#087849] text-white text-center px-6 py-10">
+      <div className="bg-[#087849] text-white text-center px-6 py-10 rounded-t-2xl -mt-6 relative z-10">
         <h1 className="text-3xl font-black mb-3">¡Visítenos!</h1>
         <p className="text-sm text-green-100 leading-relaxed">
           Cada día cerca de usted.<br />Los esperamos en su sucursal más cercana.

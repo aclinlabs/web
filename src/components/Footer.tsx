@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="bg-[#087849] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:md:col-span-1">
+      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
 
         {/* Col 1: Nuestros Servicios */}
         <div>
@@ -57,8 +57,8 @@ export default function Footer() {
         </div>
 
         {/* Col 4: Síguenos + Logo */}
-        <div className="col-span-2 md:col-span-1 flex flex-col justify-between">
-          <div>
+        <div className="md:col-span-1 flex flex-col items-center md:items-start justify-between">
+          <div className="flex flex-col items-center md:items-start">
             <h4 className="font-bold text-white mb-4 text-sm">¡Síguenos!</h4>
             <div className="flex gap-3">
               <a href="https://www.facebook.com/profile.php?id=61566541113740&mibextid=ZbWKwL" target="_blank" rel="noopener noreferrer"

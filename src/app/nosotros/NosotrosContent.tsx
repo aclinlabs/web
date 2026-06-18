@@ -23,13 +23,6 @@ function EspecialidadesSection() {
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>,
     },
     {
-      label: "Bioquímica Molecular",
-      profesionales: [
-        { nombre: "Equipo especializado", titulo: "Bioquímica molecular y genética" },
-      ],
-      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="12" cy="10" r="2"/><line x1="7" y1="6" x2="17" y2="6"/><line x1="12" y1="8" x2="5" y2="6"/><line x1="12" y1="8" x2="19" y2="6"/><line x1="12" y1="12" x2="12" y2="17"/></svg>,
-    },
-    {
       label: "Bioquímica Clínica y Hormonas",
       profesionales: [
         { nombre: "Sergio Guerrero B.", titulo: "Químico Farmacéutico", cargo: "Jefe Laboratorio Bioquímica Clínica" },
