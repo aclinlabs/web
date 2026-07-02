@@ -9,13 +9,23 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter } as any);
 
 async function main() {
-  // Admin user
-  const hashed = await bcrypt.hash("admin123", 12);
+  // Admin user — password must be provided via env, never hardcoded.
+  const adminEmail = process.env.SEED_ADMIN_EMAIL;
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+  if (!adminEmail || !adminPassword) {
+    throw new Error(
+      "SEED_ADMIN_EMAIL y SEED_ADMIN_PASSWORD son obligatorios para sembrar el usuario admin."
+    );
+  }
+  if (adminPassword.length < 12) {
+    throw new Error("SEED_ADMIN_PASSWORD debe tener al menos 12 caracteres.");
+  }
+  const hashed = await bcrypt.hash(adminPassword, 12);
   await prisma.user.upsert({
-    where: { email: "admin@aclin.cl" },
-    update: {},
+    where: { email: adminEmail },
+    update: { password: hashed },
     create: {
-      email: "admin@aclin.cl",
+      email: adminEmail,
       password: hashed,
       name: "Administrador",
       role: "admin",

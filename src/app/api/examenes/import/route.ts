@@ -43,6 +43,15 @@ export async function POST(req: Request) {
   const file = formData.get("file") as File | null;
   if (!file) return NextResponse.json({ error: "No se recibió archivo" }, { status: 400 });
 
+  const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+  if (file.size > MAX_SIZE) {
+    return NextResponse.json({ error: "El archivo supera el tamaño máximo permitido (5MB)" }, { status: 400 });
+  }
+  const allowedExt = /\.(xlsx|xls|csv)$/i;
+  if (!allowedExt.test(file.name)) {
+    return NextResponse.json({ error: "Formato no permitido. Usa .xlsx, .xls o .csv" }, { status: 400 });
+  }
+
   const buffer = Buffer.from(await file.arrayBuffer());
   const workbook = XLSX.read(buffer, { type: "buffer" });
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
