@@ -11,14 +11,20 @@ const PREVISIONES = [
   "Otra Isapre",
 ];
 
-export default function HeroCotizacionForm() {
+interface Sucursal {
+  id: string;
+  nombre: string;
+  ciudad: string;
+}
+
+export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: Sucursal[] }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     nombre: "", apellido: "", rut: "", prevision: "",
-    correo: "", fechaNacimiento: "", telefono: "", comentarios: "",
+    correo: "", fechaNacimiento: "", telefono: "", comentarios: "", sucursal: "",
   });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -91,7 +97,7 @@ export default function HeroCotizacionForm() {
               <h3 className="text-xl font-black text-[#087849]">¡Cotización enviada!</h3>
               <p className="text-gray-500 text-sm max-w-xs">Le enviaremos la información a su correo a la brevedad.</p>
               <button
-                onClick={() => { setSubmitted(false); setForm({ nombre: "", apellido: "", rut: "", prevision: "", correo: "", fechaNacimiento: "", telefono: "", comentarios: "" }); setFileName(null); }}
+                onClick={() => { setSubmitted(false); setForm({ nombre: "", apellido: "", rut: "", prevision: "", correo: "", fechaNacimiento: "", telefono: "", comentarios: "", sucursal: "" }); setFileName(null); }}
                 className="mt-2 bg-[#087849] text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-[#065e39] transition"
               >
                 Nueva cotización
@@ -101,9 +107,9 @@ export default function HeroCotizacionForm() {
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className={labelClass}>Nombre <span className="text-red-500">*</span></label>
+                  <label className={labelClass}>Nombre del paciente <span className="text-red-500">*</span></label>
                   <input type="text" name="nombre" required value={form.nombre} onChange={handleChange}
-                    placeholder="Ingrese su nombre" className={inputClass} />
+                    placeholder="Ingrese el nombre del paciente" className={inputClass} />
                 </div>
                 <div>
                   <label className={labelClass}>Rut o Pasaporte <span className="text-red-500">*</span></label>
@@ -111,9 +117,19 @@ export default function HeroCotizacionForm() {
                     placeholder="12.345.678-9" className={inputClass} />
                 </div>
                 <div>
-                  <label className={labelClass}>Apellido <span className="text-red-500">*</span></label>
+                  <label className={labelClass}>Apellido del paciente <span className="text-red-500">*</span></label>
                   <input type="text" name="apellido" required value={form.apellido} onChange={handleChange}
-                    placeholder="Ingrese su apellido" className={inputClass} />
+                    placeholder="Ingrese el apellido del paciente" className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Comuna / Sucursal <span className="text-red-500">*</span></label>
+                  <select name="sucursal" required value={form.sucursal} onChange={handleChange}
+                    className={inputClass}>
+                    <option value="" disabled>Seleccione dónde se realizará el examen</option>
+                    {sucursales.map((s) => (
+                      <option key={s.id} value={`${s.nombre} — ${s.ciudad}`}>{s.nombre} — {s.ciudad}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className={labelClass}>Previsión <span className="text-red-500">*</span></label>
