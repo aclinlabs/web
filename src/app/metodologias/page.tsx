@@ -1,3 +1,5 @@
+import MetodologiaSlider from "./MetodologiaSlider";
+
 const metodologias = [
   {
     titulo: "Bioquímica clínica e inmunoensayos (análisis hormonales, serológicos y antigénicos)",
@@ -519,20 +521,7 @@ export default function MetodologiasPage() {
                     )}
 
                     {/* Imágenes */}
-                    <div className={`shrink-0 ${m.imagenes.length === 1 ? "w-full md:w-80" : "w-full"}`}>
-                      <div className={`grid gap-3 ${m.imagenes.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
-                        {m.imagenes.map((img, j) => (
-                          <div key={j} className="flex flex-col">
-                            <img
-                              src={img.src}
-                              alt={img.nombre}
-                              className="w-full h-40 object-contain bg-white rounded border border-gray-100 p-2"
-                            />
-                            <span className="text-xs text-center text-gray-600 font-medium mt-1">{img.nombre}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <MetodologiaSlider imagenes={m.imagenes} />
                   </div>
                 </div>
               </details>
