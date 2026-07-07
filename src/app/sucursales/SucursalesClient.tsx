@@ -86,12 +86,8 @@ export default function SucursalesClient({ sucursales }: { sucursales: Sucursal[
       </div>
 
       {/* Imagen de la sucursal activa */}
-      {selected?.imagen ? (
+      {selected?.imagen && (
         <img src={selected.imagen} alt={selected.nombre} className="w-full h-56 object-cover" />
-      ) : (
-        <div className="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-          Seleccione una sucursal para ver su imagen
-        </div>
       )}
 
       {/* Mapa */}
