@@ -14,6 +14,26 @@ interface Examen {
   muestra?: string | null;
 }
 
+const INSTRUCTIVO_URL = "/instructivo-toma-muestras.pdf";
+
+function renderPreparacion(preparacion: string) {
+  if (preparacion.startsWith("http") || preparacion.toLowerCase().endsWith(".pdf")) {
+    return <a href={preparacion} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline">Ver PDF</a>;
+  }
+  const marcador = "(Ver instructivo)";
+  const idx = preparacion.indexOf(marcador);
+  if (idx === -1) return preparacion;
+  const antes = preparacion.slice(0, idx).trim();
+  return (
+    <>
+      {antes && <>{antes} </>}
+      <a href={INSTRUCTIVO_URL} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline whitespace-nowrap">
+        Ver instructivo
+      </a>
+    </>
+  );
+}
+
 export default function ExamenesClient({ examenes, categorias }: { examenes: Examen[]; categorias: string[] }) {
   const [query, setQuery] = useState("");
   const [catFilter, setCatFilter] = useState("Todos");
@@ -109,11 +129,7 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
                     <tr key={e.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f0f8f4]"}>
                       <td className="px-3 py-3 text-gray-900 font-medium">{e.nombre}</td>
                       <td className="px-3 py-3 text-gray-900">
-                        {e.preparacion
-                          ? (e.preparacion.startsWith("http") || e.preparacion.toLowerCase().endsWith(".pdf")
-                              ? <a href={e.preparacion} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline">Ver PDF</a>
-                              : e.preparacion)
-                          : "–"}
+                        {e.preparacion ? renderPreparacion(e.preparacion) : "–"}
                       </td>
                       <td className="px-3 py-3 text-gray-900">{e.tiempo || "–"}</td>
                       <td className="px-3 py-3 text-gray-600">{e.codigo || "–"}</td>

@@ -9,7 +9,7 @@ const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat
 export const metadata: Metadata = {
   title: "Aclin – Laboratorio Clínico",
   description:
-    "37 años brindando servicios de excelencia. Exámenes clínicos, resultados en línea y 20+ sucursales en la región.",
+    "38 años brindando servicios de excelencia. Exámenes clínicos, resultados en línea y 20+ sucursales en la región.",
 };
 
 export default function RootLayout({

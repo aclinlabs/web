@@ -3,20 +3,13 @@ import { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 
-const SUCURSALES = [
-  "Casa Matriz - 9 Norte",
-  "Viña del Mar - 6 Norte",
-  "Quilpué",
-  "Villa Alemana",
-  "Quillota",
-  "Reñaca",
-  "Valparaíso",
-  "Limache",
-  "Casa Blanca",
-  "La Calera",
-];
+interface SucursalOption {
+  id: string;
+  nombre: string;
+  ciudad: string;
+}
 
-export default function ContactoForm() {
+export default function ContactoForm({ sucursales }: { sucursales: SucursalOption[] }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -138,7 +131,9 @@ export default function ContactoForm() {
                   <label className={labelClass}>Sucursal <span className="text-red-500">*</span></label>
                   <select name="sucursal" required value={form.sucursal} onChange={handleChange} className={selectClass}>
                     <option value="" disabled className="text-gray-700">Seleccione su sucursal</option>
-                    {SUCURSALES.map((s) => <option key={s} value={s}>{s}</option>)}
+                    {sucursales.map((s) => (
+                      <option key={s.id} value={s.id}>{s.ciudad} - {s.nombre}</option>
+                    ))}
                   </select>
                 </div>
                 <div>

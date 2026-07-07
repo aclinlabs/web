@@ -121,7 +121,7 @@ export default function NosotrosContent() {
             ACLIN laboratorio clínico fue fundado en septiembre de 1987 por tres socios con más de 35 años de experiencia en el campo de la salud: dos Químicos Farmacéuticos y un médico hematólogo. Inicialmente, prestaba servicios de análisis de laboratorio al Hospital del Instituto de Seguridad del Trabajo (IST) de Viña del Mar. En 2001, el laboratorio se independizó del IST y se trasladó a sus actuales dependencias en calle 9 Norte N° 795, esquina con 1 Oriente, en una instalación de 500 m² útiles.
           </p>
           <p className="text-gray-900 text-sm leading-relaxed mb-4">
-            A lo largo de los años, ACLIN ha crecido significativamente. Hoy cuenta con un equipo multidisciplinario de más de 180 colaboradores, distribuido en 22 sucursales externas en la región de Valparaíso, procesando alrededor de 500 tipos diferentes de exámenes y atendiendo diariamente a más de 600 usuarios.
+            A lo largo de los años, ACLIN ha crecido significativamente. Hoy cuenta con un equipo multidisciplinario de más de 180 colaboradores, distribuido en 21 sucursales externas en la región de Valparaíso, procesando alrededor de 500 tipos diferentes de exámenes y atendiendo diariamente a más de 600 usuarios.
           </p>
           <p className="text-gray-900 text-sm leading-relaxed mb-6">
             El laboratorio se ha comprometido a entregar atención de calidad y resultados precisos, consolidándose como el principal laboratorio de la Quinta Región.
@@ -151,9 +151,9 @@ export default function NosotrosContent() {
         <div className="bg-[#087849] text-white">
           <div className="max-w-4xl mx-auto px-4 md:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-center">
             {[
-              { nombre: "Marcelo Tapia Carrerev", cargo1: "Químico Farmacéutico", cargo2: "Director Técnico" },
+              { nombre: "Marcelo Tapia Carrère", cargo1: "Químico Farmacéutico", cargo2: "Director Técnico" },
               { nombre: "Vicente Cid Krebs", cargo1: "Químico Farmacéutico", cargo2: "" },
-              { nombre: "Sergio Tapia Carrerev", cargo1: "Médico Hematólogo", cargo2: "Jefe Laboratorio Hematología" },
+              { nombre: "Sergio Tapia Carrère", cargo1: "Médico Hematólogo", cargo2: "Jefe Laboratorio Hematología" },
             ].map((f) => (
               <div key={f.nombre}>
                 <p className="font-bold text-base">{f.nombre}</p>
