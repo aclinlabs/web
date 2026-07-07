@@ -128,12 +128,12 @@ const metodologias = [
       "• Toxoplasmosis IgG/IgM",
     ],
     imagenes: [
-      "/metodologias/atellica-solution.jpeg",
-      "/metodologias/immulite-2000-xpi.jpeg",
-      "/metodologias/cobas-e-411.png",
-      "/metodologias/mini-vidas.png",
-      "/metodologias/rapidlab-348ex.png",
-      "/metodologias/maglumi-x3.png",
+      { src: "/metodologias/atellica-solution.jpeg", nombre: "Siemens Atellica Solution" },
+      { src: "/metodologias/immulite-2000-xpi.jpeg", nombre: "Siemens Immulite 2000 XPi" },
+      { src: "/metodologias/cobas-e-411.png", nombre: "Roche Cobas e 411" },
+      { src: "/metodologias/mini-vidas.png", nombre: "BioMérieux Mini VIDAS" },
+      { src: "/metodologias/rapidlab-348ex.png", nombre: "Siemens RAPIDLab 348EX" },
+      { src: "/metodologias/maglumi-x3.png", nombre: "Snibe Maglumi X3" },
     ],
   },
   {
@@ -155,7 +155,7 @@ const metodologias = [
       "• Proteína S Libre",
       "• Resistencia a la Proteína C Activada",
     ],
-    imagenes: ["/metodologias/sysmex-cs2500.jpeg"],
+    imagenes: [{ src: "/metodologias/sysmex-cs2500.jpeg", nombre: "CS-2500 Sysmex" }],
   },
   {
     titulo: "Analizadores de hematología y VHS automatizados. XN-1000 Sysmex y Autocompact Starrsed RS de Mechatronics.",
@@ -170,8 +170,8 @@ const metodologias = [
       "Por su parte, los Autocompact Starrsed RS de Mechatronics permiten la medición automatizada de hasta 100 velocidades de eritrosedimentación por hora (VHS) — parámetro muy importante del hemograma — con una metodología comparable al gold estándar o de referencia, el método de Westergren.",
     ],
     imagenes: [
-      "/metodologias/sysmex-xn1000.png",
-      "/metodologias/autocompact-starrsed-rs.jpeg",
+      { src: "/metodologias/sysmex-xn1000.png", nombre: "XN-1000 Sysmex" },
+      { src: "/metodologias/autocompact-starrsed-rs.jpeg", nombre: "Autocompact Starrsed RS" },
     ],
   },
   {
@@ -184,7 +184,7 @@ const metodologias = [
       "• Identificación de bacterias gram-positivos",
       "• Pruebas de sensibilidad",
     ],
-    imagenes: ["/metodologias/vitek-2-compact.jpeg"],
+    imagenes: [{ src: "/metodologias/vitek-2-compact.jpeg", nombre: "VITEK 2 Compact" }],
   },
   {
     titulo: "Sistema automatizado de uroanálisis",
@@ -195,7 +195,7 @@ const metodologias = [
       "• Sedimento urinario autónomo",
       "• Orina completa con sedimento",
     ],
-    imagenes: ["/metodologias/atellica-1500.jpeg"],
+    imagenes: [{ src: "/metodologias/atellica-1500.jpeg", nombre: "Siemens Atellica 1500" }],
   },
   {
     titulo: "Estudios de autoinmunidad (EliA, Fluoroenzimoinmunoensayo) y detección de IgE específicas (ImmunoCAP).",
@@ -299,7 +299,7 @@ const metodologias = [
       "Alérgenos de contacto:",
       "• Látex",
     ],
-    imagenes: ["/metodologias/phadia-250.jpeg"],
+    imagenes: [{ src: "/metodologias/phadia-250.jpeg", nombre: "Phadia 250 Thermo Fisher Scientific" }],
   },
   {
     titulo: "Electroforesis en gel de agarosa",
@@ -314,7 +314,7 @@ const metodologias = [
       "• Inmunofijación de inmunoglobulinas séricas (Mielomas, Enfermedad de Bence Jones, Macroglobulinemia de Waldenström, Enfermedad de Cadenas pesadas de inmunoglobulinas)",
       "• Inmunofijación de inmunoglobulinas urinarias (IF, Proteinuria de Bence Jones)",
     ],
-    imagenes: ["/metodologias/sebia-hydrasys.png"],
+    imagenes: [{ src: "/metodologias/sebia-hydrasys.png", nombre: "Sebia Hydrasys" }],
   },
   {
     titulo: "Autoinmunidad. Inmunofluorescencia indirecta (IFI)",
@@ -333,8 +333,8 @@ const metodologias = [
       "• Anticuerpos anti Treponémicos (FTA-ABS)",
     ],
     imagenes: [
-      "/metodologias/aesku-helios.png",
-      "/metodologias/ifi-uniqo-160.png",
+      { src: "/metodologias/aesku-helios.png", nombre: "Aesku Helios" },
+      { src: "/metodologias/ifi-uniqo-160.png", nombre: "IFI UNIQO 160" },
     ],
   },
   {
@@ -359,7 +359,7 @@ const metodologias = [
       "• Transferrina",
       "• Haptoglobina",
     ],
-    imagenes: ["/metodologias/atellica-neph-630.png"],
+    imagenes: [{ src: "/metodologias/atellica-neph-630.png", nombre: "Atellica NEPH 630 de Siemens" }],
   },
   {
     titulo: "Inmunoblot: EUROBlotOne Euroimmun",
@@ -375,7 +375,7 @@ const metodologias = [
       "• Perfil enfermedades gastrointestinales IgA, 3 antígenos",
       "• Anticuerpos anti DFS70 (Patrón Nuclear Granular Fino Denso)",
     ],
-    imagenes: ["/metodologias/euroblotone.jpeg"],
+    imagenes: [{ src: "/metodologias/euroblotone.jpeg", nombre: "Euroimmun EUROBlotOne" }],
   },
   {
     titulo: "Citometría de Flujo",
@@ -385,7 +385,7 @@ const metodologias = [
       "• Cuantificación de subpoblaciones linfocitarias B, T y Natural Killer",
       "• Cuantificación de linfocitos CD3, CD4, CD8 y CD45",
     ],
-    imagenes: ["/metodologias/facsvia.png"],
+    imagenes: [{ src: "/metodologias/facsvia.png", nombre: "Becton Dickinson FACSVia" }],
   },
   {
     titulo: "Analizador ELISA",
@@ -398,7 +398,7 @@ const metodologias = [
       "• Anti Receptor de Fosfolipasa A2 (Anti PLA2R) en sangre",
       "• Anticuerpos Anti-HMGCR (3-Hidroxi-3-Metilglutaril-Coenzima A Reductasa) (HMG-CoA)",
     ],
-    imagenes: ["/metodologias/elisys-uno.png"],
+    imagenes: [{ src: "/metodologias/elisys-uno.png", nombre: "Human Elisys Uno" }],
   },
   {
     titulo: "Diagnóstico Molecular",
@@ -427,10 +427,10 @@ const metodologias = [
       "• Estudio genético molecular de malabsorción de Lactosa",
     ],
     imagenes: [
-      "/metodologias/cobas-z480.jpeg",
-      "/metodologias/lightcycler-2.jpeg",
-      "/metodologias/cfx96-real-time.png",
-      "/metodologias/genepure-pro.jpeg",
+      { src: "/metodologias/cobas-z480.jpeg", nombre: "Roche cobas z 480" },
+      { src: "/metodologias/lightcycler-2.jpeg", nombre: "Roche LightCycler 2.0" },
+      { src: "/metodologias/cfx96-real-time.png", nombre: "Bio Rad CFX96 Real-Time System" },
+      { src: "/metodologias/genepure-pro.jpeg", nombre: "GenePure Pro" },
     ],
   },
   {
@@ -458,8 +458,8 @@ const metodologias = [
       "• Nivel plasmático de Teofilina",
     ],
     imagenes: [
-      "/metodologias/d100-biorad.png",
-      "/metodologias/hplc-chromaster.jpeg",
+      { src: "/metodologias/d100-biorad.png", nombre: "Bio-Rad D-100" },
+      { src: "/metodologias/hplc-chromaster.jpeg", nombre: "HPLC Hitachi Chromaster" },
     ],
   },
   {
@@ -471,7 +471,7 @@ const metodologias = [
       "• Test de Coombs Indirecto",
       "• Prueba de Antiglobulina Directa",
     ],
-    imagenes: ["/metodologias/wadiana-grifols.jpeg"],
+    imagenes: [{ src: "/metodologias/wadiana-grifols.jpeg", nombre: "Grifols WADiana" }],
   },
 ];
 
@@ -521,13 +521,15 @@ export default function MetodologiasPage() {
                     {/* Imágenes */}
                     <div className={`shrink-0 ${m.imagenes.length === 1 ? "w-full md:w-80" : "w-full"}`}>
                       <div className={`grid gap-3 ${m.imagenes.length === 1 ? "grid-cols-1" : m.imagenes.length <= 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-3"}`}>
-                        {m.imagenes.map((src, j) => (
-                          <img
-                            key={j}
-                            src={src}
-                            alt={`${m.titulo} — equipo ${j + 1}`}
-                            className="w-full h-40 object-contain bg-white rounded border border-gray-100 p-2"
-                          />
+                        {m.imagenes.map((img, j) => (
+                          <div key={j} className="flex flex-col">
+                            <img
+                              src={img.src}
+                              alt={img.nombre}
+                              className="w-full h-40 object-contain bg-white rounded border border-gray-100 p-2"
+                            />
+                            <span className="text-xs text-center text-gray-600 font-medium mt-1">{img.nombre}</span>
+                          </div>
                         ))}
                       </div>
                     </div>
