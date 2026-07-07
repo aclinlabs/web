@@ -1,10 +1,13 @@
 "use client";
-import { useState, useCallback, useRef } from "react";
-import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import { MapPin, Mail } from "lucide-react";
 import Link from "next/link";
 
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
+const LeafletMiniMap = dynamic(() => import("./LeafletMiniMap"), {
+  ssr: false,
+  loading: () => <div className="h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">Mapa</div>,
+});
 
 interface Sucursal {
   id: string;
@@ -23,13 +26,10 @@ interface Sucursal {
 const defaultCenter = { lat: -33.12, lng: -71.3 };
 
 export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucursal[] }) {
-  const { isLoaded } = useJsApiLoader({ id: "google-map-script", googleMapsApiKey: GOOGLE_MAPS_API_KEY });
   const [selected, setSelected] = useState<Sucursal | null>(null);
   const [openCity, setOpenCity] = useState<string | null>(null);
   const [mapCenter, setMapCenter] = useState(defaultCenter);
   const [mapZoom, setMapZoom] = useState(10);
-  const mapRef = useRef<google.maps.Map | null>(null);
-  const onLoad = useCallback((map: google.maps.Map) => { mapRef.current = map; }, []);
 
   const ciudades = [...new Set(sucursales.map((s) => s.ciudad))].sort();
 
@@ -38,10 +38,6 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
     setOpenCity(s.ciudad);
     setMapCenter({ lat: s.lat, lng: s.lng });
     setMapZoom(15);
-    if (mapRef.current) {
-      mapRef.current.panTo({ lat: s.lat, lng: s.lng });
-      mapRef.current.setZoom(15);
-    }
   }
 
   function toggleCity(ciudad: string) {
@@ -59,10 +55,6 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
         setSelected(null);
         setMapCenter({ lat: citySucursales[0].lat, lng: citySucursales[0].lng });
         setMapZoom(13);
-        if (mapRef.current) {
-          mapRef.current.panTo({ lat: citySucursales[0].lat, lng: citySucursales[0].lng });
-          mapRef.current.setZoom(13);
-        }
       }
     }
   }
@@ -139,37 +131,15 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
 
           {/* Mapa — esquina inferior derecha */}
           <div className="absolute bottom-3 right-3 rounded-lg overflow-hidden shadow-lg border-2 border-white" style={{ width: 500, height: 250 }}>
-            {isLoaded ? (
-              <GoogleMap
-                mapContainerStyle={{ width: "100%", height: "100%" }}
-                center={mapCenter}
-                zoom={mapZoom}
-                onLoad={onLoad}
-                options={{
-                  disableDefaultUI: true,
-                  zoomControl: false,
-                  styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] }],
-                }}
-              >
-                {sucursales.map((s) => (
-                  <MarkerF
-                    key={s.id}
-                    position={{ lat: s.lat, lng: s.lng }}
-                    onClick={() => selectSucursal(s)}
-                    icon={{
-                      url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
-                        selected?.id === s.id
-                          ? '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 11.25 16 24 16 24s16-12.75 16-24C32 7.163 24.837 0 16 0z" fill="#087849"/><circle cx="16" cy="16" r="6" fill="white"/></svg>'
-                          : '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"><path d="M16 0C7.163 0 0 7.163 0 16c0 11.25 16 24 16 24s16-12.75 16-24C32 7.163 24.837 0 16 0z" fill="#f59e0b"/><circle cx="16" cy="16" r="6" fill="white"/></svg>'
-                      ),
-                      scaledSize: new window.google.maps.Size(24, 30),
-                    }}
-                  />
-                ))}
-              </GoogleMap>
-            ) : (
-              <div className="h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">Mapa</div>
-            )}
+            <LeafletMiniMap
+              center={mapCenter}
+              zoom={mapZoom}
+              puntos={sucursales.map((s) => ({ id: s.id, lat: s.lat, lng: s.lng, activo: selected?.id === s.id }))}
+              onSelect={(id) => {
+                const s = sucursales.find((s) => s.id === id);
+                if (s) selectSucursal(s);
+              }}
+            />
           </div>
         </div>
       </div>
