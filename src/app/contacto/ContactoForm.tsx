@@ -12,6 +12,7 @@ interface SucursalOption {
 export default function ContactoForm({ sucursales }: { sucursales: SucursalOption[] }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     nombre: "", apellido: "", correo: "", sucursal: "", motivo: "", comentarios: "",
   });
@@ -23,9 +24,20 @@ export default function ContactoForm({ sucursales }: { sucursales: SucursalOptio
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setSubmitted(true);
+    } catch {
+      setError("No pudimos enviar su mensaje. Intente nuevamente o contáctenos por WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const labelClass = "block text-sm font-semibold text-[#087849] mb-1.5";
@@ -160,6 +172,7 @@ export default function ContactoForm({ sucursales }: { sucursales: SucursalOptio
                   >
                     {loading ? "Enviando..." : "Enviar"}
                   </button>
+                  {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
                 </div>
               </div>
             </form>

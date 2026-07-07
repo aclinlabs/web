@@ -24,6 +24,7 @@ export default function CotizacionesClient() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     nombre: "",
     apellido: "",
@@ -47,10 +48,20 @@ export default function CotizacionesClient() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // Simula envío — reemplazar con fetch real cuando haya API
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    setError(null);
+    try {
+      const body = new FormData();
+      Object.entries(form).forEach(([key, value]) => body.append(key, value));
+      if (fileRef.current?.files?.[0]) body.append("archivo", fileRef.current.files[0]);
+
+      const res = await fetch("/api/cotizacion", { method: "POST", body });
+      if (!res.ok) throw new Error();
+      setSubmitted(true);
+    } catch {
+      setError("No pudimos enviar su cotización. Intente nuevamente o contáctenos por WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -228,6 +239,7 @@ export default function CotizacionesClient() {
         <p className="text-xs text-gray-400 mt-4">
           Puede adjuntar su orden médica o exámenes anteriores (PDF, JPG, PNG, DOC). Tamaño máximo: 10 MB.
         </p>
+        {error && <p className="text-red-600 text-sm mt-3">{error}</p>}
       </form>
     </div>
   );
