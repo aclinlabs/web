@@ -520,7 +520,7 @@ export default function MetodologiasPage() {
 
                     {/* Imágenes */}
                     <div className={`shrink-0 ${m.imagenes.length === 1 ? "w-full md:w-80" : "w-full"}`}>
-                      <div className={`grid gap-3 ${m.imagenes.length === 1 ? "grid-cols-1" : m.imagenes.length <= 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-3"}`}>
+                      <div className={`grid gap-3 ${m.imagenes.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
                         {m.imagenes.map((img, j) => (
                           <div key={j} className="flex flex-col">
                             <img
