@@ -26,7 +26,11 @@ interface Sucursal {
 const defaultCenter = { lat: -33.12, lng: -71.3 };
 
 export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucursal[] }) {
-  const matriz = sucursales.find((s) => s.nombre.toLowerCase().includes("matriz")) ?? sucursales[0] ?? null;
+  const matriz =
+    sucursales.find((s) => s.nombre.toLowerCase().includes("matriz")) ??
+    sucursales.find((s) => s.nombre.toLowerCase().includes("9 norte")) ??
+    sucursales[0] ??
+    null;
   const [selected, setSelected] = useState<Sucursal | null>(() => matriz);
   const [openCity, setOpenCity] = useState<string | null>(() => matriz?.ciudad ?? null);
   const [mapCenter, setMapCenter] = useState(() => (matriz ? { lat: matriz.lat, lng: matriz.lng } : defaultCenter));
