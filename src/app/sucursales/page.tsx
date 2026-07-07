@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Sucursales – Aclin Laboratorio Clínico" };
 
 export default async function SucursalesPage() {
-  const sucursales = await prisma.sucursal.findMany({ where: { activa: true }, orderBy: { ciudad: "asc" } });
+  const sucursales = await prisma.sucursal.findMany({ where: { activa: true }, orderBy: [{ ciudad: "asc" }, { orden: "asc" }] });
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
