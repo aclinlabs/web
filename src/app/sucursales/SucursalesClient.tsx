@@ -24,6 +24,33 @@ interface Sucursal {
 
 const defaultCenter = { lat: -33.12, lng: -71.3 };
 
+function normalizar(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+// Ciudades con más de una sucursal: palabra clave de la sucursal más nueva,
+// que es la que se debe mostrar por defecto al abrir la ciudad.
+const SUCURSAL_MAS_NUEVA_POR_CIUDAD: Record<string, string[]> = {
+  "la calera": ["sicem"],
+  quillota: ["blanco encalada"],
+  quilpue: ["nueva"],
+  renaca: ["barros arana"],
+  "villa alemana": ["calle diaz", "diaz"],
+  "vina del mar": ["9 norte", "matriz"],
+};
+
+function elegirSucursalPreferida(citySucursales: Sucursal[], ciudad: string) {
+  const keywords = SUCURSAL_MAS_NUEVA_POR_CIUDAD[normalizar(ciudad)];
+  if (keywords) {
+    const match = citySucursales.find((s) => keywords.some((k) => normalizar(s.nombre).includes(k)));
+    if (match) return match;
+  }
+  return citySucursales[0];
+}
+
 export default function SucursalesClient({ sucursales }: { sucursales: Sucursal[]; apiKey?: string }) {
   const matriz =
     sucursales.find((s) => s.nombre.toLowerCase().includes("matriz")) ??
@@ -62,12 +89,8 @@ export default function SucursalesClient({ sucursales }: { sucursales: Sucursal[
     } else {
       const citySucursales = filtered.filter((s) => s.ciudad === ciudad);
       setOpenCity(ciudad);
-      if (citySucursales.length === 1) {
-        selectSucursal(citySucursales[0]);
-      } else {
-        setSelected(null);
-        setMapCenter({ lat: citySucursales[0].lat, lng: citySucursales[0].lng });
-        setMapZoom(13);
+      if (citySucursales.length > 0) {
+        selectSucursal(elegirSucursalPreferida(citySucursales, ciudad));
       }
     }
   }
