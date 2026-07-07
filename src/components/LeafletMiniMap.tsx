@@ -53,7 +53,7 @@ export default function LeafletMiniMap({
         <Marker
           key={p.id}
           position={[p.lat, p.lng]}
-          icon={pinIcon(p.activo ? "#087849" : "#f59e0b")}
+          icon={pinIcon(p.activo ? "#145c2d" : "#087849")}
           eventHandlers={{ click: () => onSelect(p.id) }}
         />
       ))}
