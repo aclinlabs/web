@@ -75,6 +75,12 @@ export default function Footer() {
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
               </a>
+              <a href="https://www.linkedin.com/company/aclin/" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-white/20 border-2 border-white flex items-center justify-center hover:bg-white hover:text-[#087849] transition text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.25h4V23h-4V8.25zM8.5 8.25h3.83v2.01h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.14V23h-4v-6.75c0-1.61-.03-3.68-2.24-3.68-2.25 0-2.59 1.75-2.59 3.56V23h-4V8.25z" />
+                </svg>
+              </a>
             </div>
           </div>
           <div className="mt-8">

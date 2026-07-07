@@ -47,3 +47,6 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# fuente editable de instructivos (solo se publican los .pdf)
+public/instructivos/*.docx

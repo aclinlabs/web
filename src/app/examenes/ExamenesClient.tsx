@@ -14,9 +14,61 @@ interface Examen {
   muestra?: string | null;
 }
 
-const INSTRUCTIVO_URL = "/instructivo-toma-muestras.pdf";
+function normalizar(texto: string) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
 
-function renderPreparacion(preparacion: string) {
+const INSTRUCTIVOS_DIR = "/instructivos";
+const INSTR = {
+  clonidina: `${INSTRUCTIVOS_DIR}/CONSENTIMIENTO INFORMADO PARA TEST DE ESTIMULACIÓN CON CLONIDINA.pdf`,
+  vih: `${INSTRUCTIVOS_DIR}/DETECCIÓN DEL VIRUS DE LA INMUNODEFICIENCIA HUMANA (VIH).pdf`,
+  hemoglobinaDeposicion: `${INSTRUCTIVOS_DIR}/HEMOGLOBINA HUMANA EN DEPOSICIÓN (1, 2 o 3 MUESTRAS).pdf`,
+  sangreGeneral: `${INSTRUCTIVOS_DIR}/INSTRUCTIVO GENERAL PARA TOMA DE MUESTRAS DE SANGRE.pdf`,
+  orinaVacio: `${INSTRUCTIVOS_DIR}/INSTRUCTIVO ORINA AL VACÍO - REVISIÓN IGNACIA TAPIA.pdf`,
+  transporteDomicilio: `${INSTRUCTIVOS_DIR}/INSTRUCTIVO PARA EL CORRECTO TRANSPORTE DE MUESTRAS DOMICILIARIAS HASTA UNIDADES DE TOMA DE MUESTRAS.pdf`,
+  deposicionFresca: `${INSTRUCTIVOS_DIR}/RECOLECCIÓN DE DEPOSICIÓN FRESCA.pdf`,
+  orina24h: `${INSTRUCTIVOS_DIR}/RECOLECCIÓN DE ORINA DE 24 HORAS.pdf`,
+  sangreOculta: `${INSTRUCTIVOS_DIR}/SANGRE OCULTA EN DEPOSICIONES.pdf`,
+  orinaCompletaMujer: `${INSTRUCTIVOS_DIR}/TOMA DE MUESTRA PARA ORINA COMPLETA _ SEDIMENTO URINARIO - MUJER.pdf`,
+  orinaCompletaHombre: `${INSTRUCTIVOS_DIR}/TOMA DE MUESTRA PARA ORINA COMPLETA _ SEDIMENTO URINARIO _ UROCULTIVO - HOMBRE.pdf`,
+  urocultivoMujer: `${INSTRUCTIVOS_DIR}/TOMA DE MUESTRA PARA UROCULTIVO - MUJER.pdf`,
+  coproparasitologico: `${INSTRUCTIVOS_DIR}/TOMA DE MUESTRAS EXAMEN COPROPARASITOLÓGICO SERIADO.pdf`,
+};
+
+function resolveInstructivo(examen: Examen): string | null {
+  const nombre = normalizar(examen.nombre || "");
+  const prep = normalizar(examen.preparacion || "");
+  const muestra = normalizar(examen.muestra || "");
+  const texto = `${nombre} ${prep}`;
+
+  if (texto.includes("clonidina")) return INSTR.clonidina;
+  if (texto.includes("inmunodeficiencia humana") || /\bvih\b/.test(texto)) return INSTR.vih;
+  if (texto.includes("hemoglobina humana en deposicion")) return INSTR.hemoglobinaDeposicion;
+  if (texto.includes("hemorragias ocultas") || texto.includes("sangre oculta")) return INSTR.sangreOculta;
+  if (texto.includes("coproparasitologico")) return INSTR.coproparasitologico;
+  if (texto.includes("orina al vacio")) return INSTR.orinaVacio;
+  if (texto.includes("domiciliari")) return INSTR.transporteDomicilio;
+  if (texto.includes("urocultivo")) {
+    if (texto.includes("mujer")) return INSTR.urocultivoMujer;
+    return INSTR.orinaCompletaHombre;
+  }
+  if (texto.includes("sedimento urinario") || texto.includes("orina completa")) {
+    if (texto.includes("hombre")) return INSTR.orinaCompletaHombre;
+    return INSTR.orinaCompletaMujer;
+  }
+  if (muestra.includes("orina") && /24\s*h/.test(prep + texto)) return INSTR.orina24h;
+  if (muestra.includes("deposicion") && prep.includes("fresca")) return INSTR.deposicionFresca;
+  if (muestra.includes("sangre")) return INSTR.sangreGeneral;
+  if (muestra.includes("orina")) return INSTR.orinaCompletaMujer;
+  if (muestra.includes("deposicion")) return INSTR.deposicionFresca;
+  return INSTR.sangreGeneral;
+}
+
+function renderPreparacion(examen: Examen) {
+  const preparacion = examen.preparacion || "";
   if (preparacion.startsWith("http") || preparacion.toLowerCase().endsWith(".pdf")) {
     return <a href={preparacion} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline">Ver PDF</a>;
   }
@@ -24,10 +76,11 @@ function renderPreparacion(preparacion: string) {
   const idx = preparacion.indexOf(marcador);
   if (idx === -1) return preparacion;
   const antes = preparacion.slice(0, idx).trim();
+  const url = resolveInstructivo(examen);
   return (
     <>
       {antes && <>{antes} </>}
-      <a href={INSTRUCTIVO_URL} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline whitespace-nowrap">
+      <a href={encodeURI(url!)} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline whitespace-nowrap">
         Ver instructivo
       </a>
     </>
@@ -129,7 +182,7 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
                     <tr key={e.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f0f8f4]"}>
                       <td className="px-3 py-3 text-gray-900 font-medium">{e.nombre}</td>
                       <td className="px-3 py-3 text-gray-900">
-                        {e.preparacion ? renderPreparacion(e.preparacion) : "–"}
+                        {e.preparacion ? renderPreparacion(e) : "–"}
                       </td>
                       <td className="px-3 py-3 text-gray-900">{e.tiempo || "–"}</td>
                       <td className="px-3 py-3 text-gray-600">{e.codigo || "–"}</td>
