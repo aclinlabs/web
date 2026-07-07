@@ -58,7 +58,7 @@ export default async function HomePage() {
                 </svg>
               ),
               label: "Cotice su\nexamen online",
-              href: "/examenes",
+              href: "/cotizaciones",
             },
             { icon: <ClipboardList size={32} className="text-white" />, label: "Revise la lista\nde exámenes", href: "/examenes" },
             { icon: <CheckCircle size={32} className="text-white" />, label: "Resultados\nen sucursal", href: "/resultados-sucursal" },
