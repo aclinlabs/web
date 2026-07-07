@@ -477,6 +477,32 @@ const metodologias = [
   },
 ];
 
+type ItemTexto =
+  | { tipo: "texto"; contenido: string }
+  | { tipo: "lista"; titulo: string; items: string[] };
+
+function agruparTexto(texto: string[]): ItemTexto[] {
+  const grupos: ItemTexto[] = [];
+  let i = 0;
+  while (i < texto.length) {
+    const linea = texto[i];
+    if (!linea.startsWith("•") && texto[i + 1]?.startsWith("•")) {
+      const items: string[] = [];
+      let j = i + 1;
+      while (j < texto.length && texto[j].startsWith("•")) {
+        items.push(texto[j].replace(/^•\s*/, ""));
+        j++;
+      }
+      grupos.push({ tipo: "lista", titulo: linea, items });
+      i = j;
+    } else {
+      grupos.push({ tipo: "texto", contenido: linea });
+      i++;
+    }
+  }
+  return grupos;
+}
+
 export default function MetodologiasPage() {
   return (
     <div>
@@ -514,9 +540,23 @@ export default function MetodologiasPage() {
                     {/* Texto */}
                     {m.texto.length > 0 && (
                       <div className="flex-1 text-sm text-gray-700 space-y-2 leading-relaxed">
-                        {m.texto.map((linea, j) => (
-                          <p key={j}>{linea}</p>
-                        ))}
+                        {agruparTexto(m.texto).map((item, j) =>
+                          item.tipo === "texto" ? (
+                            <p key={j}>{item.contenido}</p>
+                          ) : (
+                            <details key={j} className="border border-gray-200 rounded-lg bg-white group/lista">
+                              <summary className="cursor-pointer px-3 py-2 font-semibold text-[#087849] list-none flex items-center gap-2 hover:bg-gray-50 rounded-lg">
+                                <span className="shrink-0 text-xs transition-transform duration-200 group-open/lista:rotate-90">▶</span>
+                                {item.titulo}
+                              </summary>
+                              <ul className="px-4 pb-3 pt-1 space-y-1 list-disc list-inside">
+                                {item.items.map((it, idx) => (
+                                  <li key={idx}>{it}</li>
+                                ))}
+                              </ul>
+                            </details>
+                          )
+                        )}
                       </div>
                     )}
 
