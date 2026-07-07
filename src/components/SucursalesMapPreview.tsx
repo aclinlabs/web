@@ -121,27 +121,36 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
           })}
         </div>
 
-        {/* Imagen + mapa: en desktop el mapa flota sobre la imagen, en mobile van apilados */}
-        <div className="flex-1 flex flex-col md:block md:relative overflow-hidden bg-white">
+        {/* Imagen grande + mapa pequeño en esquina (desktop) */}
+        <div className="hidden md:flex flex-1 relative overflow-hidden bg-white items-center justify-start">
           {selected?.imagen ? (
             <img
               src={selected.imagen}
               alt={selected.nombre}
-              className="w-full h-56 md:h-full md:max-w-full md:max-h-full object-cover md:object-contain"
+              className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <div className="w-full h-56 md:h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
               Selecciona una sucursal
             </div>
           )}
 
-          {/* Mapa — esquina inferior derecha en desktop */}
-          <div className="hidden md:block absolute bottom-3 right-3 rounded-lg overflow-hidden shadow-lg border-2 border-white" style={{ width: 500, height: 250 }}>
+          {/* Mapa — esquina inferior derecha */}
+          <div className="absolute bottom-3 right-3 rounded-lg overflow-hidden shadow-lg border-2 border-white" style={{ width: 500, height: 250 }}>
             <LeafletMiniMap center={mapCenter} zoom={mapZoom} puntos={mapPuntos} onSelect={onMapSelect} />
           </div>
+        </div>
 
-          {/* Mapa — bloque propio debajo de la imagen en mobile */}
-          <div className="md:hidden w-full h-56 border-t border-gray-200">
+        {/* Imagen + mapa apilados (mobile) */}
+        <div className="md:hidden overflow-hidden bg-white">
+          {selected?.imagen ? (
+            <img src={selected.imagen} alt={selected.nombre} className="w-full h-56 object-cover" />
+          ) : (
+            <div className="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+              Selecciona una sucursal
+            </div>
+          )}
+          <div className="w-full h-56 border-t border-gray-200">
             <LeafletMiniMap center={mapCenter} zoom={mapZoom} puntos={mapPuntos} onSelect={onMapSelect} />
           </div>
         </div>
