@@ -59,12 +59,18 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
     }
   }
 
+  const mapPuntos = sucursales.map((s) => ({ id: s.id, lat: s.lat, lng: s.lng, activo: selected?.id === s.id }));
+  function onMapSelect(id: string) {
+    const s = sucursales.find((s) => s.id === id);
+    if (s) selectSucursal(s);
+  }
+
   return (
     <div>
       {/* Layout: sidebar + imagen grande + mapa pequeño */}
-      <div className="flex gap-0 border border-gray-200 rounded overflow-hidden" style={{ maxHeight: "500px" }}>
+      <div className="flex flex-col md:flex-row gap-0 border border-gray-200 rounded overflow-hidden md:max-h-[500px]">
         {/* Sidebar */}
-        <div className="w-80 shrink-0 border-r border-gray-200 overflow-y-auto bg-white">
+        <div className="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-gray-200 overflow-y-auto bg-white max-h-72 md:max-h-none">
           <div className="bg-[#087849] text-white px-4 py-3 text-sm font-semibold">
             Número de sucursales: {sucursales.length}
           </div>
@@ -115,31 +121,28 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
           })}
         </div>
 
-        {/* Imagen grande + mapa pequeño en esquina */}
-        <div className="flex-1 relative overflow-hidden bg-white flex items-center justify-start">
+        {/* Imagen + mapa: en desktop el mapa flota sobre la imagen, en mobile van apilados */}
+        <div className="flex-1 flex flex-col md:block md:relative overflow-hidden bg-white">
           {selected?.imagen ? (
             <img
               src={selected.imagen}
               alt={selected.nombre}
-              className="max-w-full max-h-full object-contain"
+              className="w-full h-56 md:h-full md:max-w-full md:max-h-full object-cover md:object-contain"
             />
           ) : (
-            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+            <div className="w-full h-56 md:h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
               Selecciona una sucursal
             </div>
           )}
 
-          {/* Mapa — esquina inferior derecha */}
-          <div className="absolute bottom-3 right-3 rounded-lg overflow-hidden shadow-lg border-2 border-white" style={{ width: 500, height: 250 }}>
-            <LeafletMiniMap
-              center={mapCenter}
-              zoom={mapZoom}
-              puntos={sucursales.map((s) => ({ id: s.id, lat: s.lat, lng: s.lng, activo: selected?.id === s.id }))}
-              onSelect={(id) => {
-                const s = sucursales.find((s) => s.id === id);
-                if (s) selectSucursal(s);
-              }}
-            />
+          {/* Mapa — esquina inferior derecha en desktop */}
+          <div className="hidden md:block absolute bottom-3 right-3 rounded-lg overflow-hidden shadow-lg border-2 border-white" style={{ width: 500, height: 250 }}>
+            <LeafletMiniMap center={mapCenter} zoom={mapZoom} puntos={mapPuntos} onSelect={onMapSelect} />
+          </div>
+
+          {/* Mapa — bloque propio debajo de la imagen en mobile */}
+          <div className="md:hidden w-full h-56 border-t border-gray-200">
+            <LeafletMiniMap center={mapCenter} zoom={mapZoom} puntos={mapPuntos} onSelect={onMapSelect} />
           </div>
         </div>
       </div>

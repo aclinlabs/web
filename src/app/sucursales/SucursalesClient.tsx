@@ -86,12 +86,25 @@ export default function SucursalesClient({ sucursales }: { sucursales: Sucursal[
 
       {/* Imagen de la sucursal activa */}
       {selected?.imagen ? (
-        <img src={selected.imagen} alt={selected.nombre} className="w-full h-72 object-cover" />
+        <img src={selected.imagen} alt={selected.nombre} className="w-full h-56 object-cover" />
       ) : (
         <div className="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
           Seleccione una sucursal para ver su imagen
         </div>
       )}
+
+      {/* Mapa */}
+      <div className="w-full h-56 border-t border-gray-200">
+        <LeafletMiniMap
+          center={mapCenter}
+          zoom={mapZoom}
+          puntos={filtered.map((s) => ({ id: s.id, lat: s.lat, lng: s.lng, activo: selected?.id === s.id }))}
+          onSelect={(id) => {
+            const s = filtered.find((s) => s.id === id);
+            if (s) selectSucursal(s);
+          }}
+        />
+      </div>
 
       {/* Listado en caja blanca */}
       <div className="px-4 py-6">
