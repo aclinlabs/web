@@ -56,7 +56,7 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   }
 
   const labelClass = "block text-xs font-semibold text-[#087849] mb-1";
-  const inputClass = "w-full border border-[#087849]/30 rounded-lg px-3 py-2 text-sm bg-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#087849]";
+  const inputClass = "w-full border border-[#087849]/30 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#087849]";
 
   return (
     <section className="relative w-full pb-16">

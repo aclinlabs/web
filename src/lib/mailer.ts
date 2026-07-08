@@ -1,20 +1,23 @@
-import nodemailer from "nodemailer";
+import MailComposer from "nodemailer/lib/mail-composer";
+import { google } from "googleapis";
 
-let transporter: nodemailer.Transporter | null = null;
+function getGmailClient() {
+  const auth = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+  auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+  return google.gmail({ version: "v1", auth });
+}
 
-function getTransporter() {
-  if (!transporter) {
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 465),
-      secure: process.env.SMTP_SECURE !== "false",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
-  }
-  return transporter;
+async function buildRawMessage(opts: {
+  from: string;
+  to: string;
+  replyTo?: string;
+  subject: string;
+  html: string;
+  attachments?: { filename: string; content: Buffer }[];
+}) {
+  const mail = new MailComposer(opts);
+  const message = await mail.compile().build();
+  return message.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 export async function sendFormEmail({
@@ -43,12 +46,17 @@ export async function sendFormEmail({
     </table>
   `;
 
-  await getTransporter().sendMail({
-    from: `"Sitio web Aclin" <${process.env.SMTP_USER}>`,
-    to: process.env.MAIL_TO,
+  const raw = await buildRawMessage({
+    from: `"Sitio web Aclin" <${process.env.GMAIL_SENDER}>`,
+    to: process.env.MAIL_TO!,
     replyTo,
     subject,
     html,
     attachments,
+  });
+
+  await getGmailClient().users.messages.send({
+    userId: "me",
+    requestBody: { raw },
   });
 }
