@@ -21,7 +21,7 @@ const PREVISIONES = [
 
 export default function CotizacionesClient() {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,8 +41,8 @@ export default function CotizacionesClient() {
   }
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    setFileName(file ? file.name : null);
+    const files = e.target.files;
+    setFileNames(files ? Array.from(files).map((f) => f.name) : []);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -52,7 +52,9 @@ export default function CotizacionesClient() {
     try {
       const body = new FormData();
       Object.entries(form).forEach(([key, value]) => body.append(key, value));
-      if (fileRef.current?.files?.[0]) body.append("archivo", fileRef.current.files[0]);
+      if (fileRef.current?.files) {
+        Array.from(fileRef.current.files).forEach((file) => body.append("archivo", file));
+      }
 
       const res = await fetch("/api/cotizacion", { method: "POST", body });
       if (!res.ok) throw new Error();
@@ -75,7 +77,7 @@ export default function CotizacionesClient() {
           Hemos recibido su solicitud. Le enviaremos la información a su correo a la brevedad.
         </p>
         <button
-          onClick={() => { setSubmitted(false); setForm({ nombre: "", apellido: "", rut: "", prevision: "", correo: "", fechaNacimiento: "", telefono: "", comentarios: "" }); setFileName(null); }}
+          onClick={() => { setSubmitted(false); setForm({ nombre: "", apellido: "", rut: "", prevision: "", correo: "", fechaNacimiento: "", telefono: "", comentarios: "" }); setFileNames([]); }}
           className="mt-2 bg-[#087849] text-white px-8 py-2.5 rounded-full font-semibold hover:bg-[#065e39] transition text-sm"
         >
           Nueva cotización
@@ -220,6 +222,7 @@ export default function CotizacionesClient() {
             ref={fileRef}
             type="file"
             accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+            multiple
             onChange={handleFile}
             className="hidden"
             id="cotizacion-file"
@@ -229,10 +232,14 @@ export default function CotizacionesClient() {
             className="cursor-pointer bg-[#065e39] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#044a2d] transition text-sm flex items-center gap-2"
           >
             <Paperclip size={14} />
-            {fileName ? fileName : "Selecciona su archivo"}
+            {fileNames.length > 0
+              ? fileNames.length === 1
+                ? fileNames[0]
+                : `${fileNames.length} archivos seleccionados`
+              : "Selecciona sus archivos"}
           </label>
-          {fileName && (
-            <span className="text-xs text-gray-400 truncate max-w-[180px]">{fileName}</span>
+          {fileNames.length > 0 && (
+            <span className="text-xs text-gray-400 truncate max-w-[180px]">{fileNames.join(", ")}</span>
           )}
         </div>
 

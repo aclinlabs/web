@@ -19,7 +19,7 @@ interface Sucursal {
 
 export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: Sucursal[] }) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,8 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   }
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-    setFileName(e.target.files?.[0]?.name ?? null);
+    const files = e.target.files;
+    setFileNames(files ? Array.from(files).map((f) => f.name) : []);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -43,7 +44,9 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
     try {
       const body = new FormData();
       Object.entries(form).forEach(([key, value]) => body.append(key, value));
-      if (fileRef.current?.files?.[0]) body.append("archivo", fileRef.current.files[0]);
+      if (fileRef.current?.files) {
+        Array.from(fileRef.current.files).forEach((file) => body.append("archivo", file));
+      }
 
       const res = await fetch("/api/cotizacion", { method: "POST", body });
       if (!res.ok) throw new Error();
@@ -109,7 +112,7 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
               <h3 className="text-xl font-black text-[#087849]">¡Cotización enviada!</h3>
               <p className="text-gray-500 text-sm max-w-xs">Le enviaremos la información a su correo a la brevedad.</p>
               <button
-                onClick={() => { setSubmitted(false); setForm({ nombre: "", apellido: "", rut: "", prevision: "", correo: "", fechaNacimiento: "", telefono: "", comentarios: "", sucursal: "" }); setFileName(null); }}
+                onClick={() => { setSubmitted(false); setForm({ nombre: "", apellido: "", rut: "", prevision: "", correo: "", fechaNacimiento: "", telefono: "", comentarios: "", sucursal: "" }); setFileNames([]); }}
                 className="mt-2 bg-[#087849] text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-[#065e39] transition"
               >
                 Nueva cotización
@@ -182,11 +185,15 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                     ? <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>Enviando...</>
                     : <><Send size={13} />Enviar</>}
                 </button>
-                <input ref={fileRef} type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onChange={handleFile} className="hidden" id="hero-file" />
+                <input ref={fileRef} type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple onChange={handleFile} className="hidden" id="hero-file" />
                 <label htmlFor="hero-file"
                   className="cursor-pointer bg-[#065e39] text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-[#044a2d] transition flex items-center gap-2">
                   <Paperclip size={13} />
-                  {fileName ?? "Selecciona su archivo"}
+                  {fileNames.length > 0
+                    ? fileNames.length === 1
+                      ? fileNames[0]
+                      : `${fileNames.length} archivos seleccionados`
+                    : "Selecciona sus archivos"}
                 </label>
               </div>
               {error && <p className="text-red-600 text-sm mt-3">{error}</p>}

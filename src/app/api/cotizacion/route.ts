@@ -13,16 +13,18 @@ export async function POST(req: Request) {
   const telefono = String(form.get("telefono") || "");
   const comentarios = String(form.get("comentarios") || "");
   const sucursal = String(form.get("sucursal") || "");
-  const archivo = form.get("archivo") as File | null;
+  const archivos = form.getAll("archivo") as File[];
 
   if (!nombre || !apellido || !rut || !prevision || !correo || !fechaNacimiento || !telefono) {
     return NextResponse.json({ error: "Faltan campos obligatorios" }, { status: 400 });
   }
 
   const attachments = [];
-  if (archivo && archivo.size > 0) {
-    const buffer = Buffer.from(await archivo.arrayBuffer());
-    attachments.push({ filename: archivo.name, content: buffer });
+  for (const archivo of archivos) {
+    if (archivo && archivo.size > 0) {
+      const buffer = Buffer.from(await archivo.arrayBuffer());
+      attachments.push({ filename: archivo.name, content: buffer });
+    }
   }
 
   try {
