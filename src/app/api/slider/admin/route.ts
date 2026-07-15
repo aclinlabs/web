@@ -16,7 +16,6 @@ export async function GET() {
   const data = slides.map((s) => ({
     ...s,
     imagenUrl: `/api/slider/${s.id}/imagen?v=${s.updatedAt.getTime()}`,
-    imagenUrlMobile: `/api/slider/${s.id}/imagen?variant=mobile&v=${s.updatedAt.getTime()}`,
   }));
   return NextResponse.json(data);
 }
@@ -27,11 +26,10 @@ export async function POST(req: Request) {
 
   const form = await req.formData();
   const file = form.get("imagen") as File | null;
-  const fileMobile = form.get("imagenMobile") as File | null;
   if (!file || file.size === 0) {
     return NextResponse.json({ error: "Falta la imagen" }, { status: 400 });
   }
-  if (file.size > MAX_UPLOAD_BYTES || (fileMobile && fileMobile.size > MAX_UPLOAD_BYTES)) {
+  if (file.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ error: "La imagen no puede superar 15MB" }, { status: 400 });
   }
 
@@ -40,30 +38,14 @@ export async function POST(req: Request) {
   const activo = form.get("activo") !== "false";
 
   const webp = await compressToWebp(Buffer.from(await file.arrayBuffer()), 1920);
-  const webpMobile = fileMobile && fileMobile.size > 0
-    ? await compressToWebp(Buffer.from(await fileMobile.arrayBuffer()), 1080)
-    : null;
 
   const maxOrden = await prisma.sliderImagen.aggregate({ _max: { orden: true } });
   const orden = (maxOrden._max.orden ?? -1) + 1;
 
   const slide = await prisma.sliderImagen.create({
-    data: {
-      imagen: webp,
-      mimeType: "image/webp",
-      imagenMobile: webpMobile,
-      mimeTypeMobile: webpMobile ? "image/webp" : null,
-      titulo,
-      link,
-      activo,
-      orden,
-    },
+    data: { imagen: webp, mimeType: "image/webp", titulo, link, activo, orden },
     select: { id: true, titulo: true, link: true, orden: true, activo: true, updatedAt: true },
   });
 
-  return NextResponse.json({
-    ...slide,
-    imagenUrl: `/api/slider/${slide.id}/imagen?v=${slide.updatedAt.getTime()}`,
-    imagenUrlMobile: `/api/slider/${slide.id}/imagen?variant=mobile&v=${slide.updatedAt.getTime()}`,
-  });
+  return NextResponse.json({ ...slide, imagenUrl: `/api/slider/${slide.id}/imagen?v=${slide.updatedAt.getTime()}` });
 }

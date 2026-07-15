@@ -13,7 +13,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
   const form = await req.formData();
   const file = form.get("imagen") as File | null;
-  const fileMobile = form.get("imagenMobile") as File | null;
 
   const data: Record<string, unknown> = {};
   if (form.has("titulo")) data.titulo = (form.get("titulo") as string) || null;
@@ -21,20 +20,12 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (form.has("activo")) data.activo = form.get("activo") === "true";
   if (form.has("orden")) data.orden = parseInt(form.get("orden") as string, 10);
 
-  if (file && file.size > MAX_UPLOAD_BYTES) {
-    return NextResponse.json({ error: "La imagen no puede superar 15MB" }, { status: 400 });
-  }
-  if (fileMobile && fileMobile.size > MAX_UPLOAD_BYTES) {
-    return NextResponse.json({ error: "La imagen no puede superar 15MB" }, { status: 400 });
-  }
-
   if (file && file.size > 0) {
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return NextResponse.json({ error: "La imagen no puede superar 15MB" }, { status: 400 });
+    }
     data.imagen = await compressToWebp(Buffer.from(await file.arrayBuffer()), 1920);
     data.mimeType = "image/webp";
-  }
-  if (fileMobile && fileMobile.size > 0) {
-    data.imagenMobile = await compressToWebp(Buffer.from(await fileMobile.arrayBuffer()), 1080);
-    data.mimeTypeMobile = "image/webp";
   }
 
   const slide = await prisma.sliderImagen.update({
@@ -43,11 +34,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     select: { id: true, titulo: true, link: true, orden: true, activo: true, updatedAt: true },
   });
 
-  return NextResponse.json({
-    ...slide,
-    imagenUrl: `/api/slider/${slide.id}/imagen?v=${slide.updatedAt.getTime()}`,
-    imagenUrlMobile: `/api/slider/${slide.id}/imagen?variant=mobile&v=${slide.updatedAt.getTime()}`,
-  });
+  return NextResponse.json({ ...slide, imagenUrl: `/api/slider/${slide.id}/imagen?v=${slide.updatedAt.getTime()}` });
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {

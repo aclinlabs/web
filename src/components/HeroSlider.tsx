@@ -7,7 +7,6 @@ export interface Slide {
   titulo?: string | null;
   link?: string | null;
   imagenUrl: string;
-  imagenUrlMobile?: string;
 }
 
 export default function HeroSlider({ slides }: { slides: Slide[] }) {
@@ -25,19 +24,14 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative h-[260px] md:h-[520px] overflow-hidden bg-gray-900">
+    <section className="relative w-full aspect-[1920/799] overflow-hidden bg-gray-900">
       {slides.map((slide, i) => {
         const img = (
-          <picture>
-            {slide.imagenUrlMobile && (
-              <source media="(max-width: 767px)" srcSet={slide.imagenUrlMobile} />
-            )}
-            <img
-              src={slide.imagenUrl}
-              alt={slide.titulo || "Aclin"}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </picture>
+          <img
+            src={slide.imagenUrl}
+            alt={slide.titulo || "Aclin"}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         );
         return (
           <div
