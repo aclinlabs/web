@@ -25,7 +25,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative h-[400px] md:h-[520px] overflow-hidden bg-white">
+    <section className="relative h-[260px] md:h-[520px] overflow-hidden bg-gray-900">
       {slides.map((slide, i) => {
         const img = (
           <picture>
@@ -35,7 +35,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             <img
               src={slide.imagenUrl}
               alt={slide.titulo || "Aclin"}
-              className="absolute inset-0 w-full h-full object-contain"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </picture>
         );
