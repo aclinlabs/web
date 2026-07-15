@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
-import { MapPin, FlaskConical, Bell, LogOut, ClipboardList } from "lucide-react";
+import { MapPin, FlaskConical, Bell, LogOut, ClipboardList, Images } from "lucide-react";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
@@ -73,6 +73,7 @@ export default async function AdminDashboard() {
         {/* Modules */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
+            { href: "/admin/slider", icon: Images, title: "Slider del Home", desc: "Subir y ordenar las imágenes del carrusel principal del sitio.", color: "bg-cyan-600" },
             { href: "/admin/sucursales", icon: MapPin, title: "Sucursales", desc: "Agregar, editar y gestionar sucursales. Configurar posición en el mapa.", color: "bg-[#1a7a3c]" },
             { href: "/admin/examenes", icon: FlaskConical, title: "Exámenes", desc: "Administrar catálogo de exámenes, categorías y preparaciones.", color: "bg-blue-600" },
             { href: "/admin/popup", icon: Bell, title: "Popup / Anuncios", desc: "Habilitar o deshabilitar el popup y editar su contenido.", color: "bg-yellow-500" },

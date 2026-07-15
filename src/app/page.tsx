@@ -5,41 +5,60 @@ export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import { MapPin, FlaskConical, Baby, ClipboardList, Home, CheckCircle, FileText, IdCard, MessageCircleQuestion } from "lucide-react";
 import SucursalesMapPreview from "@/components/SucursalesMapPreview";
+import HeroSlider from "@/components/HeroSlider";
 
 async function getSucursales() {
   return prisma.sucursal.findMany({ where: { activa: true }, orderBy: { orden: "asc" } });
 }
 
+async function getSlides() {
+  const slides = await prisma.sliderImagen.findMany({
+    where: { activo: true },
+    orderBy: { orden: "asc" },
+    select: { id: true, titulo: true, link: true, updatedAt: true },
+  });
+  return slides.map((s) => ({
+    id: s.id,
+    titulo: s.titulo,
+    link: s.link,
+    imagenUrl: `/api/slider/${s.id}/imagen?v=${s.updatedAt.getTime()}`,
+  }));
+}
+
 export default async function HomePage() {
-  const sucursales = await getSucursales();
+  const [sucursales, slides] = await Promise.all([getSucursales(), getSlides()]);
   return (
     <>
       {/* HERO */}
-      <section
-        className="relative text-white h-[260px] md:h-[520px]"
-        style={{
-          backgroundImage: "url('/hero-bg.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 20%",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="relative max-w-7xl mx-auto px-5 md:px-8 h-full flex flex-col items-center md:items-start justify-center gap-4 md:gap-5 pt-8 md:pt-0 pb-10">
-          <h1
-            className="text-3xl font-black leading-tight text-center"
-            style={{
-              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-            }}
-          >
-            <span className="md:hidden">Su salud,<br />nuestra prioridad</span>
-            <span className="hidden md:inline" style={{ fontWeight: 700, fontSize: "48px", lineHeight: "57px" }}>Su salud, nuestra prioridad</span>
-          </h1>
-          <p className="text-base md:text-lg font-semibold text-white max-w-md text-center md:text-left">Lo acompañamos con exámenes confiables,<br className="hidden md:block" />resultados claros y una atención de primera.</p>
-          <Link href="/sucursales" className="w-fit bg-[#087849] text-white px-7 md:px-10 py-3 rounded-full font-semibold text-sm md:text-base hover:bg-[#065e39] transition shadow-lg mx-auto md:mx-0">
-            Encuentre su sucursal aquí
-          </Link>
-        </div>
-      </section>
+      {slides.length > 0 ? (
+        <HeroSlider slides={slides} />
+      ) : (
+        <section
+          className="relative text-white h-[260px] md:h-[520px]"
+          style={{
+            backgroundImage: "url('/hero-bg.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 20%",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="relative max-w-7xl mx-auto px-5 md:px-8 h-full flex flex-col items-center md:items-start justify-center gap-4 md:gap-5 pt-8 md:pt-0 pb-10">
+            <h1
+              className="text-3xl font-black leading-tight text-center"
+              style={{
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
+            >
+              <span className="md:hidden">Su salud,<br />nuestra prioridad</span>
+              <span className="hidden md:inline" style={{ fontWeight: 700, fontSize: "48px", lineHeight: "57px" }}>Su salud, nuestra prioridad</span>
+            </h1>
+            <p className="text-base md:text-lg font-semibold text-white max-w-md text-center md:text-left">Lo acompañamos con exámenes confiables,<br className="hidden md:block" />resultados claros y una atención de primera.</p>
+            <Link href="/sucursales" className="w-fit bg-[#087849] text-white px-7 md:px-10 py-3 rounded-full font-semibold text-sm md:text-base hover:bg-[#065e39] transition shadow-lg mx-auto md:mx-0">
+              Encuentre su sucursal aquí
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Quick actions — mitad sobre la imagen, mitad sobre el blanco */}
       <div
