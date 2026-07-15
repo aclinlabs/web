@@ -22,6 +22,7 @@ async function getSlides() {
     titulo: s.titulo,
     link: s.link,
     imagenUrl: `/api/slider/${s.id}/imagen?v=${s.updatedAt.getTime()}`,
+    imagenUrlMobile: `/api/slider/${s.id}/imagen?variant=mobile&v=${s.updatedAt.getTime()}`,
   }));
 }
 

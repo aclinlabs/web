@@ -12,6 +12,7 @@ interface Slide {
   activo: boolean;
   updatedAt: string;
   imagenUrl: string;
+  imagenUrlMobile: string;
 }
 
 const empty = { titulo: "", link: "", activo: true };
@@ -22,14 +23,18 @@ export default function AdminSliderClient({ slides: initial }: { slides: Slide[]
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [previewMobile, setPreviewMobile] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const fileMobileRef = useRef<HTMLInputElement>(null);
 
   function openNew() {
     setForm(empty);
     setEditing(null);
     setPreview(null);
+    setPreviewMobile(null);
     if (fileRef.current) fileRef.current.value = "";
+    if (fileMobileRef.current) fileMobileRef.current.value = "";
     setShowForm(true);
   }
 
@@ -37,7 +42,9 @@ export default function AdminSliderClient({ slides: initial }: { slides: Slide[]
     setForm({ titulo: s.titulo || "", link: s.link || "", activo: s.activo });
     setEditing(s.id);
     setPreview(s.imagenUrl);
+    setPreviewMobile(s.imagenUrlMobile);
     if (fileRef.current) fileRef.current.value = "";
+    if (fileMobileRef.current) fileMobileRef.current.value = "";
     setShowForm(true);
   }
 
@@ -45,6 +52,12 @@ export default function AdminSliderClient({ slides: initial }: { slides: Slide[]
     const file = e.target.files?.[0];
     if (!file) return;
     setPreview(URL.createObjectURL(file));
+  }
+
+  function onFileChangeMobile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPreviewMobile(URL.createObjectURL(file));
   }
 
   async function handleSave() {
@@ -58,6 +71,7 @@ export default function AdminSliderClient({ slides: initial }: { slides: Slide[]
     body.append("link", form.link);
     body.append("activo", String(form.activo));
     if (fileRef.current?.files?.[0]) body.append("imagen", fileRef.current.files[0]);
+    if (fileMobileRef.current?.files?.[0]) body.append("imagenMobile", fileMobileRef.current.files[0]);
 
     const url = editing ? `/api/slider/admin/${editing}` : "/api/slider/admin";
     const method = editing ? "PATCH" : "POST";
@@ -143,13 +157,22 @@ export default function AdminSliderClient({ slides: initial }: { slides: Slide[]
             </div>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Imagen {editing && "(opcional, deja vacío para mantener la actual)"}</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Imagen horizontal (desktop) {editing && "(opcional, deja vacío para mantener la actual)"}</label>
                 <label className="flex items-center gap-2 border border-dashed border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-600 cursor-pointer hover:bg-gray-50 transition">
                   <Upload size={16} />
                   Seleccionar archivo
                   <input ref={fileRef} type="file" accept="image/*" onChange={onFileChange} className="hidden" />
                 </label>
-                {preview && <img src={preview} alt="preview" className="mt-2 h-32 w-full object-cover rounded-lg border border-gray-200" />}
+                {preview && <img src={preview} alt="preview" className="mt-2 h-32 w-full object-contain bg-gray-100 rounded-lg border border-gray-200" />}
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Imagen vertical (mobile, opcional) — evita que se corte el texto en celulares</label>
+                <label className="flex items-center gap-2 border border-dashed border-gray-300 rounded-lg px-3 py-3 text-sm text-gray-600 cursor-pointer hover:bg-gray-50 transition">
+                  <Upload size={16} />
+                  Seleccionar archivo
+                  <input ref={fileMobileRef} type="file" accept="image/*" onChange={onFileChangeMobile} className="hidden" />
+                </label>
+                {previewMobile && <img src={previewMobile} alt="preview mobile" className="mt-2 h-32 mx-auto w-auto object-contain bg-gray-100 rounded-lg border border-gray-200" />}
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Título (opcional, solo referencial)</label>

@@ -18,6 +18,7 @@ export default async function AdminSliderPage() {
     ...s,
     updatedAt: s.updatedAt.toISOString(),
     imagenUrl: `/api/slider/${s.id}/imagen?v=${s.updatedAt.getTime()}`,
+    imagenUrlMobile: `/api/slider/${s.id}/imagen?variant=mobile&v=${s.updatedAt.getTime()}`,
   }));
 
   return <AdminSliderClient slides={data} />;
