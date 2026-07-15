@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface Slide {
@@ -7,6 +7,7 @@ export interface Slide {
   titulo?: string | null;
   link?: string | null;
   imagenUrl: string;
+  overlay?: ReactNode;
 }
 
 export default function HeroSlider({ slides }: { slides: Slide[] }) {
@@ -27,11 +28,14 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
     <section className="relative w-full aspect-[1920/799] overflow-hidden bg-gray-900">
       {slides.map((slide, i) => {
         const img = (
-          <img
-            src={slide.imagenUrl}
-            alt={slide.titulo || "Aclin"}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          <>
+            <img
+              src={slide.imagenUrl}
+              alt={slide.titulo || "Aclin"}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {slide.overlay}
+          </>
         );
         return (
           <div
