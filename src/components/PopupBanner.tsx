@@ -33,7 +33,7 @@ export default function PopupBanner() {
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden relative animate-in zoom-in-95 duration-300">
         <button
           onClick={() => setVisible(false)}
-          className="absolute top-3 right-3 z-10 bg-white rounded-full p-1 shadow hover:bg-gray-100 transition"
+          className="absolute top-3 right-3 z-10 bg-white rounded-full p-1 shadow hover:bg-gray-100 transition text-[#1a7a3c]"
         >
           <X size={18} />
         </button>
@@ -43,27 +43,21 @@ export default function PopupBanner() {
         )}
 
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">{popup.titulo}</h2>
+          <h2 className="text-xl font-bold text-[#1a7a3c] mb-2">{popup.titulo}</h2>
           <p className="text-gray-600 text-sm leading-relaxed">{popup.contenido}</p>
 
-          <div className="mt-4 flex gap-2">
-            {popup.link && (
+          {popup.link && (
+            <div className="mt-4">
               <a
                 href={popup.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 bg-[#1a7a3c] text-white text-center py-2 rounded-lg font-semibold text-sm hover:bg-[#145c2d] transition"
+                className="block bg-[#1a7a3c] text-white text-center py-2 rounded-lg font-semibold text-sm hover:bg-[#145c2d] transition"
               >
                 Más información
               </a>
-            )}
-            <button
-              onClick={() => setVisible(false)}
-              className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg font-semibold text-sm hover:bg-gray-50 transition"
-            >
-              Cerrar
-            </button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
