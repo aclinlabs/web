@@ -54,8 +54,8 @@ export default function PopupBanner() {
             <div className="mt-4">
               <a
                 href={popup.link}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={() => setVisible(false)}
+                {...(!popup.link.startsWith("/") && { target: "_blank", rel: "noopener noreferrer" })}
                 className="block bg-[#1a7a3c] text-white text-center py-2 rounded-lg font-semibold text-sm hover:bg-[#145c2d] transition"
               >
                 Más información
