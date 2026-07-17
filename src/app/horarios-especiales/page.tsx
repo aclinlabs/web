@@ -57,7 +57,7 @@ const CIUDADES: Ciudad[] = [
   },
   {
     nombre: "Limache",
-    sedes: [{ direccion: "Urmeneta #496 (Centro Médico Limache)", clinica: "8:30 a 10:00", admin: "8:30 a 11:00" }],
+    sedes: [{ direccion: "Urmeneta #496 (Centro Médico Limache)", clinica: "8:00 a 9:30", admin: "8:00 a 11:00" }],
   },
   {
     nombre: "Quillota",
