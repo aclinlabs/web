@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 
 interface PopupData {
@@ -13,6 +14,7 @@ interface PopupData {
 export default function PopupBanner() {
   const [popup, setPopup] = useState<PopupData | null>(null);
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     fetch("/api/popup")
@@ -26,7 +28,9 @@ export default function PopupBanner() {
       .catch(() => {});
   }, []);
 
-  if (!visible || !popup) return null;
+  const onOwnLinkPage = popup?.link?.startsWith("/") && pathname === popup.link;
+
+  if (!visible || !popup || onOwnLinkPage) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
