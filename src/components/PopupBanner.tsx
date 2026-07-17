@@ -11,6 +11,13 @@ interface PopupData {
   link?: string | null;
 }
 
+// Los links internos a veces se guardan sin la barra inicial (ej. "horarios-especiales"
+// en vez de "/horarios-especiales"); esto los normaliza para href y comparaciones de ruta.
+function normalizeLink(link: string) {
+  if (/^https?:\/\//i.test(link)) return link;
+  return link.startsWith("/") ? link : `/${link}`;
+}
+
 export default function PopupBanner() {
   const [popup, setPopup] = useState<PopupData | null>(null);
   const [visible, setVisible] = useState(false);
@@ -28,7 +35,9 @@ export default function PopupBanner() {
       .catch(() => {});
   }, []);
 
-  const onOwnLinkPage = popup?.link?.startsWith("/") && pathname === popup.link;
+  const href = popup?.link ? normalizeLink(popup.link) : null;
+  const isExternal = href ? /^https?:\/\//i.test(href) : false;
+  const onOwnLinkPage = href !== null && !isExternal && pathname === href;
 
   if (!visible || !popup || onOwnLinkPage) return null;
 
@@ -50,12 +59,12 @@ export default function PopupBanner() {
           <h2 className="text-xl font-bold text-[#1a7a3c] mb-3">{popup.titulo}</h2>
           <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{popup.contenido}</p>
 
-          {popup.link && (
+          {href && (
             <div className="mt-4">
               <a
-                href={popup.link}
+                href={href}
                 onClick={() => setVisible(false)}
-                {...(!popup.link.startsWith("/") && { target: "_blank", rel: "noopener noreferrer" })}
+                {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
                 className="block bg-[#1a7a3c] text-white text-center py-2 rounded-lg font-semibold text-sm hover:bg-[#145c2d] transition"
               >
                 Más información
