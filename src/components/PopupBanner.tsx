@@ -42,9 +42,9 @@ export default function PopupBanner() {
           <img src={popup.imagen} alt={popup.titulo} className="w-full h-48 object-cover" />
         )}
 
-        <div className="p-6">
-          <h2 className="text-xl font-bold text-[#1a7a3c] mb-2">{popup.titulo}</h2>
-          <p className="text-gray-600 text-sm leading-relaxed">{popup.contenido}</p>
+        <div className="p-6 text-center">
+          <h2 className="text-xl font-bold text-[#1a7a3c] mb-3">{popup.titulo}</h2>
+          <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{popup.contenido}</p>
 
           {popup.link && (
             <div className="mt-4">
