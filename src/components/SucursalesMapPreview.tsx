@@ -2,6 +2,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { MapPin, Mail } from "lucide-react";
+import { elegirSucursalPreferida } from "@/lib/sucursales";
 import Link from "next/link";
 
 const LeafletMiniMap = dynamic(() => import("./LeafletMiniMap"), {
@@ -54,13 +55,13 @@ export default function SucursalesMapPreview({ sucursales }: { sucursales: Sucur
     } else {
       const citySucursales = sucursales.filter((s) => s.ciudad === ciudad);
       setOpenCity(ciudad);
-      if (citySucursales.length === 1) {
-        selectSucursal(citySucursales[0]);
-      } else {
-        setSelected(null);
-        setMapCenter({ lat: citySucursales[0].lat, lng: citySucursales[0].lng });
-        setMapZoom(13);
-      }
+      if (citySucursales.length === 0) return;
+      // Aunque la ciudad tenga varias sucursales se muestra una por defecto:
+      // dejarlo vacio hacía que pareciera que la foto no cargaba.
+      const preferida = elegirSucursalPreferida(citySucursales, ciudad);
+      setSelected(preferida);
+      setMapCenter({ lat: preferida.lat, lng: preferida.lng });
+      setMapZoom(citySucursales.length === 1 ? 15 : 13);
     }
   }
 
