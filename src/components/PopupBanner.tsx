@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
+import { formatearWhatsapp } from "@/lib/formatoWhatsapp";
 
 interface PopupData {
   id: string;
@@ -66,8 +67,12 @@ export default function PopupBanner() {
             href ? "pb-4" : "pb-6"
           }`}
         >
-          <h2 className="text-lg sm:text-xl font-bold text-[#1a7a3c] mb-3 pr-8">{popup.titulo}</h2>
-          <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{popup.contenido}</p>
+          {popup.titulo?.trim() && (
+            <h2 className="text-lg sm:text-xl font-bold text-[#1a7a3c] mb-3 pr-8">{popup.titulo}</h2>
+          )}
+          <div className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+            {formatearWhatsapp(popup.contenido)}
+          </div>
         </div>
 
         {href && (
