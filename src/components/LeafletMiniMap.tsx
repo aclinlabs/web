@@ -41,13 +41,17 @@ export default function LeafletMiniMap({
 }) {
   return (
     <MapContainer
+      className="mapa-aclin"
       center={[center.lat, center.lng]}
       zoom={zoom}
       zoomControl={false}
-      attributionControl={false}
       style={{ width: "100%", height: "100%" }}
     >
-      <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+      <TileLayer
+        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        maxZoom={19}
+      />
       <Recenter center={[center.lat, center.lng]} zoom={zoom} />
       {puntos.map((p) => (
         <Marker

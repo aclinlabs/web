@@ -26,7 +26,7 @@ interface Sucursal {
 const defaultCenter = { lat: -33.12, lng: -71.3 };
 
 
-export default function SucursalesClient({ sucursales }: { sucursales: Sucursal[]; apiKey?: string }) {
+export default function SucursalesClient({ sucursales }: { sucursales: Sucursal[] }) {
   const matriz =
     sucursales.find((s) => s.nombre.toLowerCase().includes("matriz")) ??
     sucursales.find((s) => s.nombre.toLowerCase().includes("9 norte")) ??

@@ -3,7 +3,14 @@ import { useState } from "react";
 import { MapPin, Plus, Pencil, Trash2, X, Check, ArrowLeft, ToggleLeft, ToggleRight } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
+import dynamic from "next/dynamic";
+
+const LeafletPicker = dynamic(() => import("@/components/LeafletPicker"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">Cargando mapa...</div>
+  ),
+});
 
 interface Sucursal {
   id: string;
@@ -23,14 +30,13 @@ interface Sucursal {
 
 const empty: Partial<Sucursal> = { nombre: "", direccion: "", ciudad: "", telefono: "", email: "", lat: -33.02, lng: -71.55, horarioClinica: "", horarioAdmin: "", imagen: "", activa: true, orden: 0 };
 
-export default function AdminSucursalesClient({ sucursales: initial, apiKey }: { sucursales: Sucursal[]; apiKey: string }) {
+export default function AdminSucursalesClient({ sucursales: initial }: { sucursales: Sucursal[] }) {
   const [list, setList] = useState<Sucursal[]>(initial);
   const [form, setForm] = useState<Partial<Sucursal>>(empty);
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [mapPos, setMapPos] = useState({ lat: -33.02, lng: -71.55 });
 
-  const { isLoaded } = useJsApiLoader({ id: "admin-map", googleMapsApiKey: apiKey });
 
   function openNew() {
     setForm(empty);
@@ -132,23 +138,15 @@ export default function AdminSucursalesClient({ sucursales: initial, apiKey }: {
             {/* Map picker */}
             <div className="mb-4">
               <label className="block text-xs font-medium text-gray-600 mb-1">Selecciona posición en el mapa (clic para mover pin)</label>
-              {isLoaded ? (
-                <div className="rounded-xl overflow-hidden border border-gray-200 h-48">
-                  <GoogleMap
-                    mapContainerStyle={{ width: "100%", height: "100%" }}
-                    center={mapPos}
-                    zoom={14}
-                    onClick={(e) => {
-                      const lat = e.latLng?.lat() || 0;
-                      const lng = e.latLng?.lng() || 0;
-                      setForm({ ...form, lat, lng });
-                      setMapPos({ lat, lng });
-                    }}
-                  >
-                    <MarkerF position={mapPos} />
-                  </GoogleMap>
-                </div>
-              ) : <div className="h-48 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">Cargando mapa...</div>}
+              <div className="rounded-xl overflow-hidden border border-gray-200 h-48">
+                <LeafletPicker
+                  position={mapPos}
+                  onPick={(lat, lng) => {
+                    setForm({ ...form, lat, lng });
+                    setMapPos({ lat, lng });
+                  }}
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">

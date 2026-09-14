@@ -21,7 +21,7 @@ export default async function SucursalesPage() {
       >
         <div className="absolute inset-0 bg-black/20" />
       </div>
-      <SucursalesClient sucursales={sucursales} apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""} />
+      <SucursalesClient sucursales={sucursales} />
     </div>
   );
 }
