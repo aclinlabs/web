@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { Headphones, Home, Send, Paperclip, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { MENSAJE_DOS_APELLIDOS, tieneDosApellidos } from "@/lib/validaciones";
 
 const PREVISIONES = [
   "Particular",
@@ -122,9 +123,9 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className={labelClass}>Nombre del paciente <span className="text-red-500">*</span></label>
+                  <label className={labelClass}>Nombres del paciente <span className="text-red-500">*</span></label>
                   <input type="text" name="nombre" required value={form.nombre} onChange={handleChange}
-                    placeholder="Ingrese el nombre del paciente" className={inputClass} />
+                    placeholder="Ingrese los nombres del paciente" className={inputClass} />
                 </div>
                 <div>
                   <label className={labelClass}>Rut o Pasaporte <span className="text-red-500">*</span></label>
@@ -132,9 +133,14 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                     placeholder="12.345.678-9" className={inputClass} />
                 </div>
                 <div>
-                  <label className={labelClass}>Apellido del paciente <span className="text-red-500">*</span></label>
-                  <input type="text" name="apellido" required value={form.apellido} onChange={handleChange}
-                    placeholder="Ingrese el apellido del paciente" className={inputClass} />
+                  <label className={labelClass}>Apellidos del paciente <span className="text-red-500">*</span></label>
+                  <input type="text" name="apellido" required value={form.apellido}
+                    onChange={(e) => {
+                      handleChange(e);
+                      // El navegador bloquea el envio y muestra el mensaje mientras falte un apellido
+                      e.target.setCustomValidity(tieneDosApellidos(e.target.value) ? "" : MENSAJE_DOS_APELLIDOS);
+                    }}
+                    placeholder="Ingrese ambos apellidos del paciente" className={inputClass} />
                 </div>
                 <div>
                   <label className={labelClass}>Comuna / Sucursal <span className="text-red-500">*</span></label>
