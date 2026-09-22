@@ -1,8 +1,8 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Headphones, Home, Send, Paperclip, CheckCircle } from "lucide-react";
 import Link from "next/link";
-import { MENSAJE_DOS_APELLIDOS, tieneDosApellidos } from "@/lib/validaciones";
+import { errorApellidos, esRutValido } from "@/lib/validaciones";
 
 const PREVISIONES = [
   "Particular",
@@ -20,6 +20,7 @@ interface Sucursal {
 
 export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: Sucursal[] }) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const apellidoRef = useRef<HTMLInputElement>(null);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,13 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
     nombre: "", apellido: "", rut: "", prevision: "",
     correo: "", fechaNacimiento: "", telefono: "", comentarios: "", sucursal: "",
   });
+
+  // Con RUT se exigen ambos apellidos; con pasaporte basta uno. Se recalcula al
+  // cambiar cualquiera de los dos campos, y el navegador bloquea el envio con
+  // el mensaje mientras no se cumpla.
+  useEffect(() => {
+    apellidoRef.current?.setCustomValidity(errorApellidos(form.apellido, form.rut));
+  }, [form.apellido, form.rut]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -134,13 +142,13 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                 </div>
                 <div>
                   <label className={labelClass}>Apellidos del paciente <span className="text-red-500">*</span></label>
-                  <input type="text" name="apellido" required value={form.apellido}
-                    onChange={(e) => {
-                      handleChange(e);
-                      // El navegador bloquea el envio y muestra el mensaje mientras falte un apellido
-                      e.target.setCustomValidity(tieneDosApellidos(e.target.value) ? "" : MENSAJE_DOS_APELLIDOS);
-                    }}
+                  <input ref={apellidoRef} type="text" name="apellido" required value={form.apellido} onChange={handleChange}
                     placeholder="Ingrese ambos apellidos del paciente" className={inputClass} />
+                  <p className="mt-1 text-[11px] text-gray-500">
+                    {form.rut && !esRutValido(form.rut)
+                      ? "Con pasaporte basta con un apellido."
+                      : "Paterno y materno. Si ingresa pasaporte, basta con uno."}
+                  </p>
                 </div>
                 <div>
                   <label className={labelClass}>Comuna / Sucursal <span className="text-red-500">*</span></label>
