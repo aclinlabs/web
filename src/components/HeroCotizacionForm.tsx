@@ -136,11 +136,6 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                     placeholder="Ingrese los nombres del paciente" className={inputClass} />
                 </div>
                 <div>
-                  <label className={labelClass}>Rut o Pasaporte <span className="text-red-500">*</span></label>
-                  <input type="text" name="rut" required value={form.rut} onChange={handleChange}
-                    placeholder="12.345.678-9" className={inputClass} />
-                </div>
-                <div>
                   <label className={labelClass}>Apellidos del paciente <span className="text-red-500">*</span></label>
                   <input ref={apellidoRef} type="text" name="apellido" required value={form.apellido} onChange={handleChange}
                     placeholder="Ingrese ambos apellidos del paciente" className={inputClass} />
@@ -149,6 +144,11 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                       ? "Con pasaporte basta con un apellido."
                       : "Paterno y materno. Si ingresa pasaporte, basta con uno."}
                   </p>
+                </div>
+                <div>
+                  <label className={labelClass}>Rut o Pasaporte <span className="text-red-500">*</span></label>
+                  <input type="text" name="rut" required value={form.rut} onChange={handleChange}
+                    placeholder="12.345.678-9" className={inputClass} />
                 </div>
                 <div>
                   <label className={labelClass}>Comuna / Sucursal <span className="text-red-500">*</span></label>
