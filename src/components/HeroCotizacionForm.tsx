@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Headphones, Home, Send, Paperclip, CheckCircle } from "lucide-react";
 import Link from "next/link";
-import { errorApellidos, esRutValido } from "@/lib/validaciones";
+import { errorApellidos, errorDocumento, esPasaporte } from "@/lib/validaciones";
 
 const PREVISIONES = [
   "Particular",
@@ -21,6 +21,7 @@ interface Sucursal {
 export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: Sucursal[] }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const apellidoRef = useRef<HTMLInputElement>(null);
+  const rutRef = useRef<HTMLInputElement>(null);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   // el mensaje mientras no se cumpla.
   useEffect(() => {
     apellidoRef.current?.setCustomValidity(errorApellidos(form.apellido, form.rut));
+    rutRef.current?.setCustomValidity(errorDocumento(form.rut));
   }, [form.apellido, form.rut]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -140,15 +142,18 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                   <input ref={apellidoRef} type="text" name="apellido" required value={form.apellido} onChange={handleChange}
                     placeholder="Ingrese ambos apellidos del paciente" className={inputClass} />
                   <p className="mt-1 text-[11px] text-gray-500">
-                    {form.rut && !esRutValido(form.rut)
+                    {esPasaporte(form.rut)
                       ? "Con pasaporte basta con un apellido."
                       : "Paterno y materno. Si ingresa pasaporte, basta con uno."}
                   </p>
                 </div>
                 <div>
                   <label className={labelClass}>Rut o Pasaporte <span className="text-red-500">*</span></label>
-                  <input type="text" name="rut" required value={form.rut} onChange={handleChange}
+                  <input ref={rutRef} type="text" name="rut" required value={form.rut} onChange={handleChange}
                     placeholder="12.345.678-9" className={inputClass} />
+                  {errorDocumento(form.rut) && (
+                    <p className="mt-1 text-[11px] text-red-600">{errorDocumento(form.rut)}</p>
+                  )}
                 </div>
                 <div>
                   <label className={labelClass}>Comuna / Sucursal <span className="text-red-500">*</span></label>

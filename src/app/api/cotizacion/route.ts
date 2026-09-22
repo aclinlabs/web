@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendFormEmail } from "@/lib/mailer";
-import { errorApellidos } from "@/lib/validaciones";
+import { errorApellidos, errorDocumento } from "@/lib/validaciones";
 
 export async function POST(req: Request) {
   const form = await req.formData();
@@ -18,6 +18,11 @@ export async function POST(req: Request) {
 
   if (!nombre || !apellido || !rut || !prevision || !correo || !fechaNacimiento || !telefono) {
     return NextResponse.json({ error: "Faltan campos obligatorios" }, { status: 400 });
+  }
+
+  const errorRut = errorDocumento(rut);
+  if (errorRut) {
+    return NextResponse.json({ error: errorRut }, { status: 400 });
   }
 
   const errorApellido = errorApellidos(apellido, rut);
