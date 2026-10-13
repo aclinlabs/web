@@ -26,6 +26,7 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progreso, setProgreso] = useState<number | null>(null);
   const [form, setForm] = useState({
     nombre: "", apellido: "", rut: "", prevision: "",
     correo: "", fechaNacimiento: "", telefono: "", comentarios: "", sucursal: "",
@@ -48,25 +49,58 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
     setFileNames(files ? Array.from(files).map((f) => f.name) : []);
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  const AVISO_WHATSAPP = " Si el problema persiste, contáctenos por WhatsApp.";
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    try {
-      const body = new FormData();
-      Object.entries(form).forEach(([key, value]) => body.append(key, value));
-      if (fileRef.current?.files) {
-        Array.from(fileRef.current.files).forEach((file) => body.append("archivo", file));
-      }
+    setProgreso(null);
 
-      const res = await fetch("/api/cotizacion", { method: "POST", body });
-      if (!res.ok) throw new Error();
-      setSubmitted(true);
-    } catch {
-      setError("No pudimos enviar su cotización. Intente nuevamente o contáctenos por WhatsApp.");
-    } finally {
-      setLoading(false);
+    const body = new FormData();
+    Object.entries(form).forEach(([key, value]) => body.append(key, value));
+    const archivos = fileRef.current?.files ? Array.from(fileRef.current.files) : [];
+    archivos.forEach((file) => body.append("archivo", file));
+
+    // XMLHttpRequest en vez de fetch: es la unica forma de mostrar el avance de
+    // la subida, que es lo que mas demora cuando adjuntan una orden escaneada.
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/cotizacion");
+
+    if (archivos.length > 0) {
+      xhr.upload.onprogress = (ev) => {
+        if (ev.lengthComputable) setProgreso(Math.round((ev.loaded / ev.total) * 100));
+      };
     }
+
+    xhr.onload = () => {
+      setLoading(false);
+      setProgreso(null);
+      if (xhr.status >= 200 && xhr.status < 300) {
+        setSubmitted(true);
+        return;
+      }
+      // El servidor explica por que rechazo; antes ese motivo se perdia.
+      let motivo = "";
+      try {
+        motivo = JSON.parse(xhr.responseText)?.error ?? "";
+      } catch {}
+      setError(motivo || "No pudimos enviar su cotización. Intente nuevamente." + AVISO_WHATSAPP);
+    };
+
+    // Conexion caida o subida cortada a medio camino: es el caso mas comun con
+    // archivos pesados, y antes se mostraba el mismo mensaje que un rechazo.
+    xhr.onerror = xhr.ontimeout = () => {
+      setLoading(false);
+      setProgreso(null);
+      setError(
+        "Se cortó la conexión mientras se enviaba" +
+          (archivos.length > 0 ? " el archivo adjunto" : "") +
+          ". Revise su conexión e intente nuevamente." + AVISO_WHATSAPP
+      );
+    };
+
+    xhr.send(body);
   }
 
   const labelClass = "block text-xs font-semibold text-[#087849] mb-1";
@@ -201,7 +235,7 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                 <button type="submit" disabled={loading}
                   className="bg-[#087849] text-white px-7 py-2.5 rounded-full font-semibold text-sm hover:bg-[#065e39] transition flex items-center gap-2 disabled:opacity-70">
                   {loading
-                    ? <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>Enviando...</>
+                    ? <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>{progreso !== null && progreso < 100 ? `Subiendo ${progreso}%` : "Enviando..."}</>
                     : <><Send size={13} />Enviar</>}
                 </button>
                 <input ref={fileRef} type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple onChange={handleFile} className="hidden" id="hero-file" />
@@ -215,6 +249,16 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                     : "Selecciona sus archivos"}
                 </label>
               </div>
+              {loading && progreso !== null && (
+                <div className="mt-3">
+                  <div className="h-1.5 w-full bg-[#087849]/15 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#087849] transition-all duration-200" style={{ width: `${progreso}%` }} />
+                  </div>
+                  <p className="text-[11px] text-gray-500 mt-1">
+                    {progreso < 100 ? `Subiendo archivo… ${progreso}%` : "Archivo subido, enviando la cotización…"}
+                  </p>
+                </div>
+              )}
               {error && <p className="text-red-600 text-sm mt-3">{error}</p>}
             </form>
           )}
