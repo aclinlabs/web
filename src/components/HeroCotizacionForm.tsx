@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Headphones, Home, Send, Paperclip, CheckCircle } from "lucide-react";
 import Link from "next/link";
-import { errorApellidos, errorDocumento, esPasaporte } from "@/lib/validaciones";
+import { errorApellidos, errorDocumento, errorFechaNacimiento, esPasaporte, formatearFecha } from "@/lib/validaciones";
 
 const PREVISIONES = [
   "Particular",
@@ -22,6 +22,7 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   const fileRef = useRef<HTMLInputElement>(null);
   const apellidoRef = useRef<HTMLInputElement>(null);
   const rutRef = useRef<HTMLInputElement>(null);
+  const fechaRef = useRef<HTMLInputElement>(null);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -38,10 +39,12 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   useEffect(() => {
     apellidoRef.current?.setCustomValidity(errorApellidos(form.apellido, form.rut));
     rutRef.current?.setCustomValidity(errorDocumento(form.rut));
-  }, [form.apellido, form.rut]);
+    fechaRef.current?.setCustomValidity(errorFechaNacimiento(form.fechaNacimiento));
+  }, [form.apellido, form.rut, form.fechaNacimiento]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: name === "fechaNacimiento" ? formatearFecha(value) : value }));
   }
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -182,12 +185,41 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                   </p>
                 </div>
                 <div>
+                  <label className={labelClass}>Fecha de nacimiento <span className="text-red-500">*</span></label>
+                  <input ref={fechaRef} type="text" name="fechaNacimiento" required inputMode="numeric"
+                    value={form.fechaNacimiento} onChange={handleChange}
+                    placeholder="dd/mm/aaaa" maxLength={10} className={inputClass} />
+                  {errorFechaNacimiento(form.fechaNacimiento) ? (
+                    <p className="mt-1 text-[11px] text-red-600">{errorFechaNacimiento(form.fechaNacimiento)}</p>
+                  ) : (
+                    <p className="mt-1 text-[11px] text-gray-500">Día, mes y año. Por ejemplo 16/11/1986.</p>
+                  )}
+                </div>
+                <div>
                   <label className={labelClass}>Rut o Pasaporte <span className="text-red-500">*</span></label>
                   <input ref={rutRef} type="text" name="rut" required value={form.rut} onChange={handleChange}
                     placeholder="12.345.678-9" className={inputClass} />
                   {errorDocumento(form.rut) && (
                     <p className="mt-1 text-[11px] text-red-600">{errorDocumento(form.rut)}</p>
                   )}
+                </div>
+                <div>
+                  <label className={labelClass}>Teléfono <span className="text-red-500">*</span></label>
+                  <input type="tel" name="telefono" required value={form.telefono} onChange={handleChange}
+                    placeholder="+56 9" className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Correo Electrónico <span className="text-red-500">*</span></label>
+                  <input type="email" name="correo" required value={form.correo} onChange={handleChange}
+                    placeholder="Ingrese su correo electrónico" className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Previsión <span className="text-red-500">*</span></label>
+                  <select name="prevision" required value={form.prevision} onChange={handleChange}
+                    className={inputClass}>
+                    <option value="" disabled>Seleccione su previsión</option>
+                    {PREVISIONES.map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
                 </div>
                 <div>
                   <label className={labelClass}>Comuna / Sucursal <span className="text-red-500">*</span></label>
@@ -199,34 +231,11 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className={labelClass}>Previsión <span className="text-red-500">*</span></label>
-                  <select name="prevision" required value={form.prevision} onChange={handleChange}
-                    className={inputClass}>
-                    <option value="" disabled>Seleccione su previsión</option>
-                    {PREVISIONES.map((p) => <option key={p} value={p}>{p}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className={labelClass}>Correo Electrónico <span className="text-red-500">*</span></label>
-                  <input type="email" name="correo" required value={form.correo} onChange={handleChange}
-                    placeholder="Ingrese su correo electrónico" className={inputClass} />
-                </div>
-                <div className="md:row-span-3">
+                <div className="md:col-span-2">
                   <label className={labelClass}>Comentarios / Preguntas</label>
                   <textarea name="comentarios" value={form.comentarios} onChange={handleChange}
                     placeholder="Escribe tu comentario"
-                    className={`${inputClass} md:h-[calc(100%-20px)] min-h-[108px] resize-none`} />
-                </div>
-                <div>
-                  <label className={labelClass}>Fecha de nacimiento <span className="text-red-500">*</span></label>
-                  <input type="date" name="fechaNacimiento" required value={form.fechaNacimiento} onChange={handleChange}
-                    className={inputClass} />
-                </div>
-                <div>
-                  <label className={labelClass}>Teléfono <span className="text-red-500">*</span></label>
-                  <input type="tel" name="telefono" required value={form.telefono} onChange={handleChange}
-                    placeholder="+56 9" className={inputClass} />
+                    className={`${inputClass} min-h-[108px] resize-none`} />
                 </div>
               </div>
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendFormEmail } from "@/lib/mailer";
-import { errorApellidos, errorDocumento } from "@/lib/validaciones";
+import { errorApellidos, errorDocumento, errorFechaNacimiento } from "@/lib/validaciones";
 
 export async function POST(req: Request) {
   const form = await req.formData();
@@ -28,6 +28,11 @@ export async function POST(req: Request) {
   const errorApellido = errorApellidos(apellido, rut);
   if (errorApellido) {
     return NextResponse.json({ error: errorApellido }, { status: 400 });
+  }
+
+  const errorFecha = errorFechaNacimiento(fechaNacimiento);
+  if (errorFecha) {
+    return NextResponse.json({ error: errorFecha }, { status: 400 });
   }
 
   const attachments = [];

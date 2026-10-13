@@ -63,3 +63,35 @@ export function errorApellidos(apellidos: string, documento: string): string {
   }
   return n >= 1 ? "" : "Ingrese el apellido del paciente.";
 }
+
+/**
+ * Fecha de nacimiento escrita como dd/mm/aaaa.
+ *
+ * Se usa un campo propio en vez de <input type="date"> porque ese lo muestra
+ * cada navegador segun su idioma (en ingles sale mes/dia/año) y los pacientes
+ * se confundian con el orden.
+ */
+export function formatearFecha(valor: string): string {
+  const d = valor.replace(/\D/g, "").slice(0, 8);
+  if (d.length <= 2) return d;
+  if (d.length <= 4) return `${d.slice(0, 2)}/${d.slice(2)}`;
+  return `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}`;
+}
+
+/** Error de la fecha de nacimiento, o "" si esta bien. */
+export function errorFechaNacimiento(valor: string): string {
+  const m = valor.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!m) return valor.trim() === "" ? "" : "Escriba la fecha como día/mes/año, por ejemplo 16/11/1986.";
+
+  const [dia, mes, anio] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const fecha = new Date(anio, mes - 1, dia);
+  const existe =
+    fecha.getFullYear() === anio && fecha.getMonth() === mes - 1 && fecha.getDate() === dia;
+  if (!existe) return "Esa fecha no existe. Revise el día y el mes.";
+
+  const hoy = new Date();
+  hoy.setHours(23, 59, 59, 999);
+  if (fecha > hoy) return "La fecha de nacimiento no puede ser futura.";
+  if (anio < 1900) return "Revise el año de nacimiento.";
+  return "";
+}
