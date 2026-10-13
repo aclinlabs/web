@@ -43,6 +43,20 @@ export async function POST(req: Request) {
     }
   }
 
+  // El formulario manda los adjuntos codificados en base64 porque el firewall
+  // que hay delante del sitio bloquea las subidas binarias.
+  const archivosB64 = String(form.get("archivosB64") || "");
+  if (archivosB64) {
+    try {
+      const lista = JSON.parse(archivosB64) as { nombre: string; contenido: string }[];
+      for (const a of lista) {
+        if (a?.contenido) attachments.push({ filename: a.nombre || "adjunto", content: Buffer.from(a.contenido, "base64") });
+      }
+    } catch {
+      return NextResponse.json({ error: "No pudimos leer el archivo adjunto." }, { status: 400 });
+    }
+  }
+
   try {
     await sendFormEmail({
       subject: `Cotización de examen — ${nombre} ${apellido}`,

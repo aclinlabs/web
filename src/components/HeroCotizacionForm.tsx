@@ -53,8 +53,24 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
   }
 
   const AVISO_WHATSAPP = " Si el problema persiste, contáctenos por WhatsApp.";
+  const MAX_ADJUNTOS_MB = 18;
 
-  function handleSubmit(e: React.FormEvent) {
+  /**
+   * Los adjuntos se mandan codificados en texto (base64) en vez de como
+   * archivo binario: el firewall que hay delante del sitio bloquea las subidas
+   * binarias y los pacientes no podian enviar su orden medica.
+   */
+  function leerComoTexto(archivo: File) {
+    return new Promise<{ nombre: string; tipo: string; contenido: string }>((resolve, reject) => {
+      const lector = new FileReader();
+      lector.onload = () =>
+        resolve({ nombre: archivo.name, tipo: archivo.type, contenido: String(lector.result).split(",")[1] ?? "" });
+      lector.onerror = () => reject(new Error(`No pudimos leer ${archivo.name}`));
+      lector.readAsDataURL(archivo);
+    });
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -63,7 +79,26 @@ export default function HeroCotizacionForm({ sucursales = [] }: { sucursales?: S
     const body = new FormData();
     Object.entries(form).forEach(([key, value]) => body.append(key, value));
     const archivos = fileRef.current?.files ? Array.from(fileRef.current.files) : [];
-    archivos.forEach((file) => body.append("archivo", file));
+
+    const pesoMB = archivos.reduce((t, a) => t + a.size, 0) / 1024 / 1024;
+    if (pesoMB > MAX_ADJUNTOS_MB) {
+      setLoading(false);
+      setError(
+        `Los archivos pesan ${pesoMB.toFixed(1)} MB y el maximo es ${MAX_ADJUNTOS_MB} MB. ` +
+          "Envie menos archivos o tomeles una foto de menor calidad."
+      );
+      return;
+    }
+
+    if (archivos.length > 0) {
+      try {
+        body.append("archivosB64", JSON.stringify(await Promise.all(archivos.map(leerComoTexto))));
+      } catch {
+        setLoading(false);
+        setError("No pudimos leer el archivo adjunto. Intente seleccionarlo nuevamente." + AVISO_WHATSAPP);
+        return;
+      }
+    }
 
     // XMLHttpRequest en vez de fetch: es la unica forma de mostrar el avance de
     // la subida, que es lo que mas demora cuando adjuntan una orden escaneada.
