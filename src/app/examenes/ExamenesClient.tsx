@@ -1,7 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
 import { Search, X } from "lucide-react";
-import { INSTRUCTIVOS_DIR, resolveInstructivos } from "./instructivos";
 
 interface Examen {
   id: string;
@@ -13,37 +12,47 @@ interface Examen {
   preparacion?: string | null;
   tiempo?: string | null;
   muestra?: string | null;
+  lugarToma?: string | null;
+  instructivos?: unknown;
+}
+
+interface Instructivo {
+  etiqueta: string;
+  url: string;
+}
+
+function instructivosDe(examen: Examen): Instructivo[] {
+  if (!Array.isArray(examen.instructivos)) return [];
+  return examen.instructivos.filter(
+    (i): i is Instructivo => typeof i === "object" && i !== null && typeof (i as Instructivo).url === "string"
+  );
 }
 
 
 function renderPreparacion(examen: Examen) {
-  const preparacion = examen.preparacion || "";
-  if (preparacion.startsWith("http") || preparacion.toLowerCase().endsWith(".pdf")) {
-    return <a href={preparacion} target="_blank" rel="noopener noreferrer" className="text-[#087849] underline">Ver PDF</a>;
-  }
-  const marcador = "(Ver instructivo)";
-  const idx = preparacion.indexOf(marcador);
-  if (idx === -1) return preparacion;
-  const antes = preparacion.slice(0, idx).trim();
-  const instructivos = resolveInstructivos(examen);
-  // Sin instructivo que cubra este examen: se muestra la preparación sin link.
-  if (instructivos.length === 0) return antes;
+  // Los datos antiguos traian el marcador "(Ver instructivo)" en el texto; ya no se usa.
+  const preparacion = (examen.preparacion || "").replace(/\(?ver instructivo\)?/gi, "").trim();
+  const instructivos = instructivosDe(examen);
+  if (!preparacion && instructivos.length === 0) return "–";
   return (
     <>
-      {antes && <>{antes} </>}
-      {instructivos.map((ins, i) => (
-        <span key={ins.archivo}>
-          {i > 0 && <span className="text-gray-400"> · </span>}
-          <a
-            href={`${INSTRUCTIVOS_DIR}/${ins.archivo}.pdf`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#087849] underline whitespace-nowrap"
-          >
-            Ver instructivo{ins.variante ? ` (${ins.variante})` : ""}
-          </a>
-        </span>
-      ))}
+      {preparacion && <p className="whitespace-pre-line">{preparacion}</p>}
+      {instructivos.length > 0 && (
+        <ul className={`${preparacion ? "mt-2" : ""} border border-[#087849]/30 bg-[#f0f8f4] rounded-lg px-3 py-2 space-y-1`}>
+          {instructivos.map((ins, i) => (
+            <li key={i}>
+              <a
+                href={ins.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#087849] underline font-medium"
+              >
+                Ver instructivo{ins.etiqueta ? ` (${ins.etiqueta})` : ""}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
@@ -122,11 +131,12 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
       <div className="flex-1 min-w-0">
         <div className="rounded-xl overflow-hidden border border-gray-200">
           <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
-            <table className="w-full text-sm min-w-[480px]">
+            <table className="w-full text-sm min-w-[720px]">
               <thead className="sticky top-0">
                 <tr className="bg-[#087849] text-white">
                   <th className="text-left px-3 py-3 font-semibold">Nombre</th>
                   <th className="text-left px-3 py-3 font-semibold">Preparación del paciente</th>
+                  <th className="text-left px-3 py-3 font-semibold">Lugar de toma de muestra</th>
                   <th className="text-left px-3 py-3 font-semibold">Plazo de entrega</th>
                   <th className="text-left px-3 py-3 font-semibold">Código</th>
                 </tr>
@@ -134,7 +144,7 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-10 text-center text-gray-400 text-sm">
+                    <td colSpan={5} className="px-4 py-10 text-center text-gray-400 text-sm">
                       No se encontraron exámenes con ese criterio.
                     </td>
                   </tr>
@@ -142,9 +152,8 @@ export default function ExamenesClient({ examenes, categorias }: { examenes: Exa
                   filtered.map((e, i) => (
                     <tr key={e.id} className={i % 2 === 0 ? "bg-white" : "bg-[#f0f8f4]"}>
                       <td className="px-3 py-3 text-gray-900 font-medium">{e.nombre}</td>
-                      <td className="px-3 py-3 text-gray-900">
-                        {e.preparacion ? renderPreparacion(e) : "–"}
-                      </td>
+                      <td className="px-3 py-3 text-gray-900 align-top">{renderPreparacion(e)}</td>
+                      <td className="px-3 py-3 text-gray-900 whitespace-pre-line">{e.lugarToma || "–"}</td>
                       <td className="px-3 py-3 text-gray-900">{e.tiempo || "–"}</td>
                       <td className="px-3 py-3 text-gray-600">{e.codigo || "–"}</td>
                     </tr>

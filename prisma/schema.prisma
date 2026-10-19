@@ -36,13 +36,15 @@ model Sucursal {
 model Examen {
   id          String   @id @default(cuid())
   nombre       String
-  codigo       String?  @unique
+  codigo       String?
   categoria    String?
   subcategoria String?
   descripcion  String?
   preparacion  String?
   tiempo       String?
   muestra      String?
+  lugarToma    String?
+  instructivos Json?
   activo      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

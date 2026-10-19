@@ -14,12 +14,19 @@ interface Examen {
   preparacion?: string | null;
   tiempo?: string | null;
   muestra?: string | null;
+  lugarToma?: string | null;
+  instructivos?: Instructivo[] | null;
   activo: boolean;
+}
+
+interface Instructivo {
+  etiqueta: string;
+  url: string;
 }
 
 const empty: Partial<Examen> = {
   nombre: "", codigo: "", categoria: "", subcategoria: "",
-  descripcion: "", preparacion: "", tiempo: "", muestra: "", activo: true,
+  descripcion: "", preparacion: "", tiempo: "", muestra: "", lugarToma: "", instructivos: [], activo: true,
 };
 
 export default function AdminExamenesClient({ examenes: initial }: { examenes: Examen[] }) {
@@ -44,7 +51,8 @@ export default function AdminExamenesClient({ examenes: initial }: { examenes: E
   async function handleSave() {
     const method = editing ? "PUT" : "POST";
     const url = editing ? `/api/examenes/${editing}` : "/api/examenes";
-    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+    const payload = { ...form, instructivos: (form.instructivos || []).filter((i) => i.url.trim() !== "") };
+    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     if (!res.ok) { toast.error("Error al guardar"); return; }
     const saved = await res.json();
     if (editing) { setList(list.map((e) => (e.id === editing ? saved : e))); toast.success("Examen actualizado"); }
@@ -70,7 +78,10 @@ export default function AdminExamenesClient({ examenes: initial }: { examenes: E
       const res = await fetch("/api/examenes/import", { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error || "Error al importar"); return; }
-      toast.success(`${data.count} exámenes importados correctamente`);
+      toast.success(`Importación lista: ${data.actualizados} actualizados, ${data.creados} nuevos, ${data.desactivados} desactivados`, { duration: 8000 });
+      if (data.desactivados > 0) {
+        toast(`Desactivados por no venir en el archivo: ${data.desactivadosNombres.slice(0, 8).join(", ")}${data.desactivados > 8 ? "…" : ""}`, { duration: 12000 });
+      }
       // Recargar lista
       const listRes = await fetch("/api/examenes");
       setList(await listRes.json());
@@ -143,6 +154,7 @@ export default function AdminExamenesClient({ examenes: initial }: { examenes: E
                 { key: "subcategoria", label: "Subcategoría" },
                 { key: "muestra", label: "Tipo de Muestra" },
                 { key: "tiempo", label: "Plazo de Entrega" },
+                { key: "lugarToma", label: "Lugar de Toma de Muestra" },
               ].map(({ key, label }) => (
                 <div key={key}>
                   <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
@@ -158,6 +170,24 @@ export default function AdminExamenesClient({ examenes: initial }: { examenes: E
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Descripción</label>
                 <textarea rows={3} value={form.descripcion || ""} onChange={(e) => setForm({ ...form, descripcion: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-gray-600 mb-1">Instructivos (en la web se muestran como links de Ver instructivo)</label>
+              <div className="space-y-2">
+                {(form.instructivos || []).map((ins, i) => (
+                  <div key={i} className="flex gap-2">
+                    <input type="text" placeholder="Etiqueta (ej: Mujeres, Orina 24 hrs) — opcional" value={ins.etiqueta}
+                      onChange={(e) => setForm({ ...form, instructivos: (form.instructivos || []).map((x, j) => (j === i ? { ...x, etiqueta: e.target.value } : x)) })}
+                      className="w-2/5 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="/instructivos/archivo.pdf o https://…" value={ins.url}
+                      onChange={(e) => setForm({ ...form, instructivos: (form.instructivos || []).map((x, j) => (j === i ? { ...x, url: e.target.value } : x)) })}
+                      className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <button type="button" onClick={() => setForm({ ...form, instructivos: (form.instructivos || []).filter((_, j) => j !== i) })} className="text-red-500 hover:text-red-700 px-2" title="Quitar"><Trash2 size={16} /></button>
+                  </div>
+                ))}
+                <button type="button" onClick={() => setForm({ ...form, instructivos: [...(form.instructivos || []), { etiqueta: "", url: "" }] })}
+                  className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"><Plus size={14} /> Agregar instructivo</button>
               </div>
             </div>
             <div className="flex items-center justify-between">
