@@ -63,6 +63,17 @@ const COLUMNAS: Record<string, Campo> = {
 
 const mapaInstructivos = mapaDrive as Record<string, { archivo: string; titulo: string; codigo: string }>;
 
+// DOC-CLI-032 -> PDF local. Sirve para las columnas de referencia del Excel
+// ("Codigo instructivo"), que a veces listan mas documentos de los que caben
+// como hipervinculo (el panel de ITS necesita siete).
+const porCodigoDoc = new Map(Object.values(mapaInstructivos).map((i) => [i.codigo, i]));
+
+// "Indicaciones para toma de muestras de secrecion uretral" -> "Secrecion uretral"
+export function etiquetaCorta(titulo: string) {
+  const t = titulo.replace(/^indicaciones(?:\s+generales)?\s+para(?:\s+la)?\s+toma\s+de\s+muestras?\s+(?:(?:de|para|del|en)\b\s*)?/i, "").trim();
+  return t ? t[0].toUpperCase() + t.slice(1) : titulo;
+}
+
 function sinTildes(texto: string) {
   return texto.normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
@@ -90,7 +101,12 @@ export function resolverUrlInstructivo(url: string) {
 // "Ver instructivo (Orina 24 hrs)" -> "Orina 24 hrs"; "Ver instructivo" -> ""
 function etiquetaDesde(texto: string) {
   const linea = texto.split("\n").find((l) => /instructivo/i.test(l)) ?? texto;
-  return limpiar(linea.replace(/.*instructivo/i, "").replace(/^[\s:(-]+|[\s)]+$/g, ""));
+  return limpiar(
+    linea
+      .replace(/.*instructivo/i, "")
+      .replace(/^[\s:(-]+|[\s)]+$/g, "")
+      .replace(/^tipo de muestra[\s:]*/i, "")
+  );
 }
 
 function esUrl(texto: string) {
@@ -159,6 +175,19 @@ export function leerExamenes(buffer: Buffer): FilaExamen[] {
       const crudo = String(cel?.v ?? "");
       const link: string | undefined = cel?.l?.Target ?? (esUrl(crudo) ? crudo.trim() : undefined);
       if (link) fila.instructivos.push({ etiqueta: esUrl(crudo) ? "" : etiquetaDesde(crudo), url: resolverUrlInstructivo(link) });
+    }
+
+    // Codigos DOC-CLI que aparezcan en cualquier celda de la fila y aun no esten
+    // enlazados: se agregan con el PDF local. Si no tenemos ese PDF, se omite.
+    const yaEnlazados = new Set(fila.instructivos.map((i) => i.url));
+    for (let c = rango.s.c; c <= rango.e.c; c++) {
+      for (const codigo of texto(r, c).toUpperCase().match(/DOC-CLI-\d{3}/g) ?? []) {
+        const doc = porCodigoDoc.get(codigo);
+        if (doc && !yaEnlazados.has(doc.archivo)) {
+          yaEnlazados.add(doc.archivo);
+          fila.instructivos.push({ etiqueta: etiquetaCorta(doc.titulo), url: doc.archivo });
+        }
+      }
     }
 
     if (fila.lugarToma && /^todas$/i.test(fila.lugarToma)) fila.lugarToma = "Todas";
