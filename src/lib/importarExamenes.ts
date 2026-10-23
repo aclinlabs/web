@@ -237,6 +237,7 @@ export async function importarExamenes(filas: FilaExamen[]): Promise<ResultadoIm
     }
   }
 
-  await prisma.$transaction(operaciones);
+  // Son ~600 escrituras; con el limite por defecto (5 s) la transaccion vence y se revierte.
+  await prisma.$transaction(operaciones, { timeout: 180_000, maxWait: 15_000 });
   return resultado;
 }
