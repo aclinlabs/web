@@ -1,4 +1,5 @@
 import React from "react";
+import { aniosDeExperiencia } from "@/lib/aniosAclin";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -97,7 +98,7 @@ export default async function HomePage() {
           <div className="bg-[#087849] w-full md:w-2/3 flex flex-col md:flex-row items-stretch">
             {/* Texto izquierda */}
             <div className="md:w-[72%] px-8 md:pl-28 md:pr-8 py-12 md:py-16 flex flex-col justify-center items-center md:items-start text-center md:text-left">
-              <div className="text-[64px] md:text-[80px] leading-none md:leading-[57px] font-bold" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontWeight: 700 }}>38</div>
+              <div className="text-[64px] md:text-[80px] leading-none md:leading-[57px] font-bold" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", fontWeight: 700 }}>{aniosDeExperiencia()}</div>
               <div className="mt-4 text-2xl md:text-3xl font-bold leading-tight md:whitespace-nowrap" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", letterSpacing: "0.02em" }}>años de experiencia</div>
               <p className="text-green-100 mt-4 text-base md:text-lg leading-relaxed" style={{ letterSpacing: "0.1em" }}>Brindando un servicio de excelencia, con ética, profesionalismo e innovación tecnológica, garantizando precisión y seguridad en cada resultado.</p>
               <Link href="/nosotros" className="inline-block mt-5 bg-white text-[#087849] px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition w-fit">¡Conózcanos!</Link>

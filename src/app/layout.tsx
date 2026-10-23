@@ -3,14 +3,17 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import PublicLayout from "@/components/PublicLayout";
 import { Toaster } from "react-hot-toast";
+import { aniosDeExperiencia } from "@/lib/aniosAclin";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
 
-export const metadata: Metadata = {
-  title: "Aclin – Laboratorio Clínico",
-  description:
-    "38 años brindando servicios de excelencia. Exámenes clínicos, resultados en línea y 20+ sucursales en la región.",
-};
+// Funcion y no constante: los años se calculan al momento de servir la pagina.
+export function generateMetadata(): Metadata {
+  return {
+    title: "Aclin – Laboratorio Clínico",
+    description: `${aniosDeExperiencia()} años brindando servicios de excelencia. Exámenes clínicos, resultados en línea y 20+ sucursales en la región.`,
+  };
+}
 
 export default function RootLayout({
   children,
