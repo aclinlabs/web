@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { Search, X } from "lucide-react";
+import mapaInstructivos from "@/lib/instructivosDrive.json";
 
 interface Examen {
   id: string;
@@ -21,11 +22,23 @@ interface Instructivo {
   url: string;
 }
 
+// Titulo corto de cada PDF del sitio, por URL: "Sangre con particularidades", "Orina de 24 horas"...
+const TITULO_POR_URL = new Map(
+  Object.values(mapaInstructivos as Record<string, { archivo: string; titulo: string }>).map((i) => [
+    i.archivo,
+    i.titulo.replace(/^indicaciones(?:\s+generales)?\s+para(?:\s+la)?\s+toma\s+de\s+muestras?\s+(?:(?:de|para|del|en)\b\s*)?/i, "").replace(/^\w/, (c) => c.toUpperCase()),
+  ])
+);
+
 function instructivosDe(examen: Examen): Instructivo[] {
   if (!Array.isArray(examen.instructivos)) return [];
-  return examen.instructivos.filter(
+  const lista = examen.instructivos.filter(
     (i): i is Instructivo => typeof i === "object" && i !== null && typeof (i as Instructivo).url === "string"
   );
+  // Con un solo instructivo basta "Ver instructivo"; con varios, cada link dice cual es
+  // para que no queden dos iguales (el importador deja la etiqueta vacia si el Excel no la trae).
+  if (lista.length < 2) return lista;
+  return lista.map((i) => (i.etiqueta ? i : { ...i, etiqueta: TITULO_POR_URL.get(i.url) ?? "" }));
 }
 
 
