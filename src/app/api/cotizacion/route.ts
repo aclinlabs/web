@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendFormEmail } from "@/lib/mailer";
+import { prisma } from "@/lib/prisma";
 import { errorApellidos, errorDocumento, errorFechaNacimiento } from "@/lib/validaciones";
 
 export async function POST(req: Request) {
@@ -73,9 +74,20 @@ export async function POST(req: Request) {
       ],
       attachments,
     });
-    return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Error enviando correo de cotización:", err);
     return NextResponse.json({ error: "No se pudo enviar la cotización" }, { status: 500 });
   }
+
+  // El registro es solo para estadísticas: si falla, la cotización ya salió
+  // por correo y el paciente no debe ver un error.
+  try {
+    await prisma.cotizacion.create({
+      data: { sucursal: sucursal || null, prevision, adjuntos: attachments.length },
+    });
+  } catch (err) {
+    console.error("Error guardando el registro de cotización:", err);
+  }
+
+  return NextResponse.json({ ok: true });
 }

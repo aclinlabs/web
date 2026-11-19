@@ -88,3 +88,15 @@ model ResultadoSucursal {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Registro de cada cotización enviada desde el sitio. Guarda solo datos para
+// estadísticas: los datos del paciente y los adjuntos van únicamente por correo.
+model Cotizacion {
+  id        String   @id @default(cuid())
+  sucursal  String?
+  prevision String
+  adjuntos  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
