@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
-import { MapPin, FlaskConical, Bell, LogOut, ClipboardList, Images } from "lucide-react";
+import { MapPin, FlaskConical, Bell, LogOut, ClipboardList, Images, BarChart3 } from "lucide-react";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
@@ -78,6 +78,7 @@ export default async function AdminDashboard() {
             { href: "/admin/examenes", icon: FlaskConical, title: "Exámenes", desc: "Administrar catálogo de exámenes, categorías y preparaciones.", color: "bg-blue-600" },
             { href: "/admin/popup", icon: Bell, title: "Popup / Anuncios", desc: "Habilitar o deshabilitar el popup y editar su contenido.", color: "bg-yellow-500" },
             { href: "/admin/resultados-sucursal", icon: ClipboardList, title: "Resultados en Sucursal", desc: "Gestionar listado de exámenes que requieren retiro presencial.", color: "bg-purple-600" },
+            { href: "/admin/cotizaciones", icon: BarChart3, title: "Cotizaciones", desc: "Ver cuántas cotizaciones llegan por mes, por sucursal y por previsión.", color: "bg-teal-600" },
           ].map(({ href, icon: Icon, title, desc, color }) => (
             <Link key={href} href={href} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition group">
               <div className={`w-12 h-12 ${color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
